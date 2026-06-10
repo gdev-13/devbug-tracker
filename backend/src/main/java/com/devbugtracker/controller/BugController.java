@@ -37,6 +37,11 @@ public class BugController {
         return bugService.findById(id);
     }
     
+    @GetMapping("/project/{projectId}")
+    public List<BugResponseDTO> findByProject(@PathVariable Long projectId) {
+        return bugService.findByProject(projectId);
+    }
+    
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public BugResponseDTO create(@RequestBody @Valid BugRequestDTO requestDTO) {

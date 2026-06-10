@@ -85,6 +85,15 @@ public class BugService {
         return toResponseDTO(savedBug);
     }
     
+    public List<BugResponseDTO> findByProject(Long projectId) {
+        Project project = findProjectById(projectId);
+
+        return bugRepository.findByProject(project)
+                .stream()
+                .map(this::toResponseDTO)
+                .toList();
+    }
+    
     private Project findProjectById(Long id) {
         return projectRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Projeto não encontrado"));
