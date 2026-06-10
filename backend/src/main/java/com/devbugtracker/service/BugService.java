@@ -4,8 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.devbugtracker.dto.BugRequestDTO;
 import com.devbugtracker.dto.BugResponseDTO;
 import com.devbugtracker.entity.Bug;
+import com.devbugtracker.entity.Project;
+import com.devbugtracker.exception.ResourceNotFoundException;
 import com.devbugtracker.repository.BugRepository;
 import com.devbugtracker.repository.ProjectRepository;
 
@@ -43,5 +46,37 @@ public class BugService {
                 bug.getProject().getId(),
                 bug.getProject().getName()
         );
+    }
+    
+    public BugResponseDTO create(BugRequestDTO requestDTO) {
+        Project project = findProjectById(requestDTO.getProjectId());
+
+        Bug bug = new Bug();
+
+        bug.setTitle(requestDTO.getTitle());
+        bug.setDescription(requestDTO.getDescription());
+        bug.setErrorMessage(requestDTO.getErrorMessage());
+        bug.setCodeSnippet(requestDTO.getCodeSnippet());
+        bug.setTechnology(requestDTO.getTechnology());
+        bug.setPossibleCause(requestDTO.getPossibleCause());
+        bug.setSolution(requestDTO.getSolution());
+        bug.setProject(project);
+
+        if (requestDTO.getSeverity() != null) {
+            bug.setSeverity(requestDTO.getSeverity());
+        }
+
+        if (requestDTO.getStatus() != null) {
+            bug.setStatus(requestDTO.getStatus());
+        }
+
+        Bug savedBug = bugRepository.save(bug);
+
+        return toResponseDTO(savedBug);
+    }
+    
+    private Project findProjectById(Long id) {
+        return projectRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Projeto não encontrado"));
     }
 }
