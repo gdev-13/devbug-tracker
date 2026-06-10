@@ -115,4 +115,9 @@ public class BugService {
 
         return toResponseDTO(updatedBug);
     }
+    
+    public void delete(Long id) {
+        Bug bug = findBugById(id);
+        bugRepository.delete(bug);
+    }
 }
