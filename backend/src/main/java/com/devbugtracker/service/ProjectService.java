@@ -61,4 +61,20 @@ public class ProjectService {
 
         return toResponseDTO(savedProject);
     }
+    
+    public ProjectResponseDTO update(Long id, ProjectRequestDTO requestDTO) {
+        Project project = findProjectById(id);
+
+        project.setName(requestDTO.getName());
+        project.setDescription(requestDTO.getDescription());
+        project.setTechnologies(requestDTO.getTechnologies());
+
+        if (requestDTO.getStatus() != null) {
+            project.setStatus(requestDTO.getStatus());
+        }
+
+        Project updatedProject = projectRepository.save(project);
+
+        return toResponseDTO(updatedProject);
+    }
 }

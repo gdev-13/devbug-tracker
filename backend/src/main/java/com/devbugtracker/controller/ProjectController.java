@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -39,5 +40,13 @@ public class ProjectController {
     @ResponseStatus(HttpStatus.CREATED)
     public ProjectResponseDTO create(@RequestBody @Valid ProjectRequestDTO requestDTO) {
         return projectService.create(requestDTO);
+    }
+    
+    @PutMapping("/{id}")
+    public ProjectResponseDTO update(
+            @PathVariable Long id,
+            @RequestBody @Valid ProjectRequestDTO requestDTO
+    ) {
+        return projectService.update(id, requestDTO);
     }
 }
