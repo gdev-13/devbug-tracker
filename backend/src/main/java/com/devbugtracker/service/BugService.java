@@ -89,4 +89,30 @@ public class BugService {
         return projectRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Projeto não encontrado"));
     }
+    
+    public BugResponseDTO update(Long id, BugRequestDTO requestDTO) {
+        Bug bug = findBugById(id);
+        Project project = findProjectById(requestDTO.getProjectId());
+
+        bug.setTitle(requestDTO.getTitle());
+        bug.setDescription(requestDTO.getDescription());
+        bug.setErrorMessage(requestDTO.getErrorMessage());
+        bug.setCodeSnippet(requestDTO.getCodeSnippet());
+        bug.setTechnology(requestDTO.getTechnology());
+        bug.setPossibleCause(requestDTO.getPossibleCause());
+        bug.setSolution(requestDTO.getSolution());
+        bug.setProject(project);
+
+        if (requestDTO.getSeverity() != null) {
+            bug.setSeverity(requestDTO.getSeverity());
+        }
+
+        if (requestDTO.getStatus() != null) {
+            bug.setStatus(requestDTO.getStatus());
+        }
+
+        Bug updatedBug = bugRepository.save(bug);
+
+        return toResponseDTO(updatedBug);
+    }
 }
