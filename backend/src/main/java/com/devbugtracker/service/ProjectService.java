@@ -77,4 +77,9 @@ public class ProjectService {
 
         return toResponseDTO(updatedProject);
     }
+    
+    public void delete(Long id) {
+        Project project = findProjectById(id);
+        projectRepository.delete(project);
+    }
 }
