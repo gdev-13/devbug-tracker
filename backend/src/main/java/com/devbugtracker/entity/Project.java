@@ -2,8 +2,12 @@ package com.devbugtracker.entity;
 
 import java.time.LocalDateTime;
 
+import com.devbugtracker.enums.ProjectStatus;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,6 +38,9 @@ public class Project {
 	private LocalDateTime createdAt;
 	@Column(nullable = false)
 	private LocalDateTime updatedAt;
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private ProjectStatus status = ProjectStatus.IN_PROGRESS;
 	
 	@PrePersist
 	public void onCreate() {
