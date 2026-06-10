@@ -48,6 +48,16 @@ public class BugService {
         );
     }
     
+    public BugResponseDTO findById(Long id) {
+        Bug bug = findBugById(id);
+        return toResponseDTO(bug);
+    }
+    
+    private Bug findBugById(Long id) {
+        return bugRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Bug não encontrado"));
+    }
+    
     public BugResponseDTO create(BugRequestDTO requestDTO) {
         Project project = findProjectById(requestDTO.getProjectId());
 
