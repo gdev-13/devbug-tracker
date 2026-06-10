@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.devbugtracker.dto.ProjectRequestDTO;
 import com.devbugtracker.dto.ProjectResponseDTO;
 import com.devbugtracker.entity.Project;
+import com.devbugtracker.exception.ResourceNotFoundException;
 import com.devbugtracker.repository.ProjectRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -43,7 +44,7 @@ public class ProjectService {
     
     private Project findProjectById(Long id) {
         return projectRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Projeto não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Projeto não encontrado"));
     }
     
     public ProjectResponseDTO create(ProjectRequestDTO requestDTO) {
