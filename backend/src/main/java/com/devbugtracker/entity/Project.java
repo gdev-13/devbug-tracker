@@ -44,11 +44,13 @@ public class Project {
 	
 	@PrePersist
 	public void onCreate() {
-		createdAt = LocalDateTime.now();
+	    LocalDateTime now = LocalDateTime.now();
+	    createdAt = now;
+	    updatedAt = now;
 	}
-	
+
 	@PreUpdate
 	public void onUpdate() {
-		updatedAt = LocalDateTime.now();
+	    updatedAt = LocalDateTime.now();
 	}
 }
