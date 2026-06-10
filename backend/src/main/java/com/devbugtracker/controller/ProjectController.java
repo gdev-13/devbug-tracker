@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,11 @@ public class ProjectController {
     public List<ProjectResponseDTO> findAll() {
         return projectService.findAll();
     }
+	
+	@GetMapping("/{id}")
+	public ProjectResponseDTO findById(@PathVariable Long id) {
+	    return projectService.findById(id);
+	}
 	
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

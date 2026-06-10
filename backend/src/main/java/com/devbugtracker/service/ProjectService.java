@@ -36,6 +36,16 @@ public class ProjectService {
         );
     }
     
+    public ProjectResponseDTO findById(Long id) {
+        Project project = findProjectById(id);
+        return toResponseDTO(project);
+    }
+    
+    private Project findProjectById(Long id) {
+        return projectRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Projeto não encontrado"));
+    }
+    
     public ProjectResponseDTO create(ProjectRequestDTO requestDTO) {
         Project project = new Project();
 
