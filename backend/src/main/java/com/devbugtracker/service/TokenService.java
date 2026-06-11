@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.devbugtracker.entity.AppUser;
 
 @Service
@@ -30,5 +31,16 @@ public class TokenService {
                 .withIssuedAt(Date.from(now))
                 .withExpiresAt(Date.from(expiresAt))
                 .sign(Algorithm.HMAC256(secret));
+    }
+    
+    public String validateToken(String token) {
+        try {
+            return JWT.require(Algorithm.HMAC256(secret))
+                    .build()
+                    .verify(token)
+                    .getSubject();
+        } catch (JWTVerificationException exception) {
+            return null;
+        }
     }
 }
