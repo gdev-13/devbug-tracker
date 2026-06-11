@@ -4,6 +4,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.devbugtracker.dto.AppUserResponseDTO;
+import com.devbugtracker.dto.AuthResponseDTO;
+import com.devbugtracker.dto.LoginRequestDTO;
 import com.devbugtracker.dto.RegisterRequestDTO;
 import com.devbugtracker.entity.AppUser;
 import com.devbugtracker.exception.BadRequestException;
@@ -17,6 +19,7 @@ public class AuthService {
 
     private final AppUserRepository appUserRepository;
     private final PasswordEncoder passwordEncoder;
+    private final TokenService tokenService;
 
     public AppUserResponseDTO register(RegisterRequestDTO requestDTO) {
         if (appUserRepository.existsByEmail(requestDTO.getEmail())) {
@@ -40,6 +43,23 @@ public class AuthService {
                 appUser.getName(),
                 appUser.getEmail(),
                 appUser.getCreatedAt()
+        );
+    }
+    
+    public AuthResponseDTO login(LoginRequestDTO requestDTO) {
+        AppUser appUser = appUserRepository.findByEmail(requestDTO.getEmail())
+                .orElseThrow(() -> new BadRequestException("Email ou senha inválidos"));
+
+        if (!passwordEncoder.matches(requestDTO.getPassword(), appUser.getPassword())) {
+            throw new BadRequestException("Email ou senha inválidos");
+        }
+
+        String token = tokenService.generateToken(appUser);
+
+        return new AuthResponseDTO(
+                token,
+                "Bearer",
+                toResponseDTO(appUser)
         );
     }
 }
