@@ -55,6 +55,29 @@ public class ProjectService {
                 .toList();
     }
     
+    public List<ProjectResponseDTO> findByTechnologies(List<String> technologies) {
+        return projectRepository.findAll()
+                .stream()
+                .filter(project -> containsAllTechnologies(project.getTechnologies(), technologies))
+                .map(this::toResponseDTO)
+                .toList();
+    }
+    
+    private boolean containsAllTechnologies(String projectTechnologies, List<String> selectedTechnologies) {
+        if (projectTechnologies == null || projectTechnologies.isBlank()) {
+            return false;
+        }
+
+        List<String> projectTechnologyList = List.of(projectTechnologies.split(","))
+                .stream()
+                .map(technology -> technology.trim().toLowerCase())
+                .toList();
+
+        return selectedTechnologies.stream()
+                .map(technology -> technology.trim().toLowerCase())
+                .allMatch(projectTechnologyList::contains);
+    }
+    
     public ProjectResponseDTO create(ProjectRequestDTO requestDTO) {
         Project project = new Project();
 
