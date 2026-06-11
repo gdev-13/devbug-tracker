@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.devbugtracker.dto.AppUserResponseDTO;
+import com.devbugtracker.dto.AuthResponseDTO;
+import com.devbugtracker.dto.LoginRequestDTO;
 import com.devbugtracker.dto.RegisterRequestDTO;
 import com.devbugtracker.service.AuthService;
 
@@ -25,5 +27,10 @@ public class AuthController {
     @ResponseStatus(HttpStatus.CREATED)
     public AppUserResponseDTO register(@RequestBody @Valid RegisterRequestDTO requestDTO) {
         return authService.register(requestDTO);
+    }
+    
+    @PostMapping("/login")
+    public AuthResponseDTO login(@RequestBody @Valid LoginRequestDTO requestDTO) {
+        return authService.login(requestDTO);
     }
 }
