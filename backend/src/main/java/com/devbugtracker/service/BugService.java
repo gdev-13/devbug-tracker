@@ -74,6 +74,13 @@ public class BugService {
                 .toList();
     }
     
+    public List<BugResponseDTO> findByTechnology(String technology) {
+        return bugRepository.findByTechnologyIgnoreCase(technology)
+                .stream()
+                .map(this::toResponseDTO)
+                .toList();
+    }
+    
     public BugResponseDTO create(BugRequestDTO requestDTO) {
         Project project = findProjectById(requestDTO.getProjectId());
 
