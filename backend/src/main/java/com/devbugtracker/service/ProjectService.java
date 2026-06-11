@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.devbugtracker.dto.ProjectRequestDTO;
 import com.devbugtracker.dto.ProjectResponseDTO;
 import com.devbugtracker.entity.Project;
+import com.devbugtracker.enums.ProjectStatus;
 import com.devbugtracker.exception.ResourceNotFoundException;
 import com.devbugtracker.repository.ProjectRepository;
 
@@ -45,6 +46,13 @@ public class ProjectService {
     private Project findProjectById(Long id) {
         return projectRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Projeto não encontrado"));
+    }
+    
+    public List<ProjectResponseDTO> findByStatus(ProjectStatus status) {
+        return projectRepository.findByStatus(status)
+                .stream()
+                .map(this::toResponseDTO)
+                .toList();
     }
     
     public ProjectResponseDTO create(ProjectRequestDTO requestDTO) {
