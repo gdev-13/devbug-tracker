@@ -68,4 +68,8 @@ public class AuthService {
                 toResponseDTO(appUser)
         );
     }
+    
+    public AppUserResponseDTO getAuthenticatedUser(AppUser appUser) {
+        return toResponseDTO(appUser);
+    }
 }
