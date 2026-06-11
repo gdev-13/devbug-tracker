@@ -13,6 +13,7 @@ public class ProjectRequestDTO {
     @NotBlank(message = "O nome do projeto é obrigatório")
     private String name;
     private String description;
+    @NotBlank(message = "As tecnologias do projeto são obrigatórias")
     private String technologies;
     private ProjectStatus status;
 }

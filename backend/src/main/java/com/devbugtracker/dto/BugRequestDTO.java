@@ -17,6 +17,7 @@ public class BugRequestDTO {
     private String description;
     private String errorMessage;
     private String codeSnippet;
+    @NotBlank(message = "A tecnologia do bug é obrigatória")
     private String technology;
     private BugSeverity severity;
     private BugStatus status;
