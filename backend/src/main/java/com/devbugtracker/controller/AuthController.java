@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.devbugtracker.dto.AppUserResponseDTO;
 import com.devbugtracker.dto.AuthResponseDTO;
 import com.devbugtracker.dto.LoginRequestDTO;
 import com.devbugtracker.dto.RegisterRequestDTO;
@@ -25,7 +24,7 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public AppUserResponseDTO register(@RequestBody @Valid RegisterRequestDTO requestDTO) {
+    public AuthResponseDTO register(@RequestBody @Valid RegisterRequestDTO requestDTO) {
         return authService.register(requestDTO);
     }
     

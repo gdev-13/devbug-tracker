@@ -21,7 +21,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
 
-    public AppUserResponseDTO register(RegisterRequestDTO requestDTO) {
+    public AuthResponseDTO register(RegisterRequestDTO requestDTO) {
         if (appUserRepository.existsByEmail(requestDTO.getEmail())) {
             throw new BadRequestException("Email já cadastrado");
         }
@@ -34,7 +34,13 @@ public class AuthService {
 
         AppUser savedUser = appUserRepository.save(appUser);
 
-        return toResponseDTO(savedUser);
+        String token = tokenService.generateToken(savedUser);
+
+        return new AuthResponseDTO(
+                token,
+                "Bearer",
+                toResponseDTO(savedUser)
+        );
     }
 
     private AppUserResponseDTO toResponseDTO(AppUser appUser) {
