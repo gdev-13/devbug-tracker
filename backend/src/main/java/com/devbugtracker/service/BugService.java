@@ -8,6 +8,7 @@ import com.devbugtracker.dto.BugRequestDTO;
 import com.devbugtracker.dto.BugResponseDTO;
 import com.devbugtracker.entity.Bug;
 import com.devbugtracker.entity.Project;
+import com.devbugtracker.enums.BugSeverity;
 import com.devbugtracker.enums.BugStatus;
 import com.devbugtracker.exception.ResourceNotFoundException;
 import com.devbugtracker.repository.BugRepository;
@@ -61,6 +62,13 @@ public class BugService {
     
     public List<BugResponseDTO> findByStatus(BugStatus status) {
         return bugRepository.findByStatus(status)
+                .stream()
+                .map(this::toResponseDTO)
+                .toList();
+    }
+    
+    public List<BugResponseDTO> findBySeverity(BugSeverity severity) {
+        return bugRepository.findBySeverity(severity)
                 .stream()
                 .map(this::toResponseDTO)
                 .toList();

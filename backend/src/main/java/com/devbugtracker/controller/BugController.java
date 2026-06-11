@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.devbugtracker.dto.BugRequestDTO;
 import com.devbugtracker.dto.BugResponseDTO;
+import com.devbugtracker.enums.BugSeverity;
 import com.devbugtracker.enums.BugStatus;
 import com.devbugtracker.service.BugService;
 
@@ -41,6 +42,11 @@ public class BugController {
     @GetMapping("/status/{status}")
     public List<BugResponseDTO> findByStatus(@PathVariable BugStatus status) {
         return bugService.findByStatus(status);
+    }
+    
+    @GetMapping("/severity/{severity}")
+    public List<BugResponseDTO> findBySeverity(@PathVariable BugSeverity severity) {
+        return bugService.findBySeverity(severity);
     }
     
     @GetMapping("/project/{projectId}")
