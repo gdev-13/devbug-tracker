@@ -24,4 +24,10 @@ public interface BugRepository extends JpaRepository<Bug, Long> {
     List<Bug> findByProject_UserAndSeverity(AppUser user, BugSeverity severity);
 
     List<Bug> findByProject_UserAndTechnologyIgnoreCase(AppUser user, String technology);
+    
+    long countByProject_User(AppUser user);
+
+    long countByProject_UserAndStatus(AppUser user, BugStatus status);
+
+    long countByProject_UserAndSeverity(AppUser user, BugSeverity severity);
 }
