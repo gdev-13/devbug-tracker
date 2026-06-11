@@ -1,12 +1,15 @@
 package com.devbugtracker.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -31,6 +34,8 @@ public class AppUser {
     private String password;
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
+    @OneToMany(mappedBy = "user")
+    private List<Project> projects = new ArrayList<>();
     @PrePersist
     public void onCreate() {
         createdAt = LocalDateTime.now();
