@@ -8,6 +8,7 @@ import com.devbugtracker.dto.ProjectRequestDTO;
 import com.devbugtracker.dto.ProjectResponseDTO;
 import com.devbugtracker.entity.Project;
 import com.devbugtracker.enums.ProjectStatus;
+import com.devbugtracker.exception.BadRequestException;
 import com.devbugtracker.exception.ResourceNotFoundException;
 import com.devbugtracker.repository.ProjectRepository;
 
@@ -56,6 +57,10 @@ public class ProjectService {
     }
     
     public List<ProjectResponseDTO> findByTechnologies(List<String> technologies) {
+        if (technologies == null || technologies.isEmpty() || technologies.stream().allMatch(String::isBlank)) {
+            throw new BadRequestException("Informe pelo menos uma tecnologia para filtrar os projetos");
+        }
+
         return projectRepository.findAll()
                 .stream()
                 .filter(project -> containsAllTechnologies(project.getTechnologies(), technologies))

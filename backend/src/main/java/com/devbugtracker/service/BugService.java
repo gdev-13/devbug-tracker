@@ -10,6 +10,7 @@ import com.devbugtracker.entity.Bug;
 import com.devbugtracker.entity.Project;
 import com.devbugtracker.enums.BugSeverity;
 import com.devbugtracker.enums.BugStatus;
+import com.devbugtracker.exception.BadRequestException;
 import com.devbugtracker.exception.ResourceNotFoundException;
 import com.devbugtracker.repository.BugRepository;
 import com.devbugtracker.repository.ProjectRepository;
@@ -75,6 +76,10 @@ public class BugService {
     }
     
     public List<BugResponseDTO> findByTechnology(String technology) {
+        if (technology == null || technology.isBlank()) {
+            throw new BadRequestException("Informe uma tecnologia para filtrar os bugs");
+        }
+
         return bugRepository.findByTechnologyIgnoreCase(technology)
                 .stream()
                 .map(this::toResponseDTO)
