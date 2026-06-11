@@ -8,6 +8,7 @@ import com.devbugtracker.dto.BugRequestDTO;
 import com.devbugtracker.dto.BugResponseDTO;
 import com.devbugtracker.entity.Bug;
 import com.devbugtracker.entity.Project;
+import com.devbugtracker.enums.BugStatus;
 import com.devbugtracker.exception.ResourceNotFoundException;
 import com.devbugtracker.repository.BugRepository;
 import com.devbugtracker.repository.ProjectRepository;
@@ -56,6 +57,13 @@ public class BugService {
     private Bug findBugById(Long id) {
         return bugRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Bug não encontrado"));
+    }
+    
+    public List<BugResponseDTO> findByStatus(BugStatus status) {
+        return bugRepository.findByStatus(status)
+                .stream()
+                .map(this::toResponseDTO)
+                .toList();
     }
     
     public BugResponseDTO create(BugRequestDTO requestDTO) {

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.devbugtracker.dto.BugRequestDTO;
 import com.devbugtracker.dto.BugResponseDTO;
+import com.devbugtracker.enums.BugStatus;
 import com.devbugtracker.service.BugService;
 
 import jakarta.validation.Valid;
@@ -35,6 +36,11 @@ public class BugController {
     @GetMapping("/{id}")
     public BugResponseDTO findById(@PathVariable Long id) {
         return bugService.findById(id);
+    }
+    
+    @GetMapping("/status/{status}")
+    public List<BugResponseDTO> findByStatus(@PathVariable BugStatus status) {
+        return bugService.findByStatus(status);
     }
     
     @GetMapping("/project/{projectId}")
