@@ -7,8 +7,10 @@ import com.devbugtracker.dto.AppUserResponseDTO;
 import com.devbugtracker.dto.AuthResponseDTO;
 import com.devbugtracker.dto.LoginRequestDTO;
 import com.devbugtracker.dto.RegisterRequestDTO;
+import com.devbugtracker.dto.UpdateUserRequestDTO;
 import com.devbugtracker.entity.AppUser;
 import com.devbugtracker.exception.BadRequestException;
+import com.devbugtracker.exception.ResourceNotFoundException;
 import com.devbugtracker.repository.AppUserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -71,5 +73,16 @@ public class AuthService {
     
     public AppUserResponseDTO getAuthenticatedUser(AppUser appUser) {
         return toResponseDTO(appUser);
+    }
+    
+    public AppUserResponseDTO updateAuthenticatedUser(AppUser authenticatedUser, UpdateUserRequestDTO requestDTO) {
+        AppUser appUser = appUserRepository.findById(authenticatedUser.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+
+        appUser.setName(requestDTO.getName());
+
+        AppUser updatedUser = appUserRepository.save(appUser);
+
+        return toResponseDTO(updatedUser);
     }
 }
