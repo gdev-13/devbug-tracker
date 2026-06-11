@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.devbugtracker.dto.BugRequestDTO;
 import com.devbugtracker.dto.BugResponseDTO;
+import com.devbugtracker.entity.AppUser;
 import com.devbugtracker.entity.Bug;
 import com.devbugtracker.entity.Project;
 import com.devbugtracker.enums.BugSeverity;
@@ -24,8 +25,8 @@ public class BugService {
     private final BugRepository bugRepository;
     private final ProjectRepository projectRepository;
     
-    public List<BugResponseDTO> findAll() {
-        return bugRepository.findAll()
+    public List<BugResponseDTO> findAll(AppUser appUser) {
+        return bugRepository.findByProject_User(appUser)
                 .stream()
                 .map(this::toResponseDTO)
                 .toList();
@@ -51,43 +52,43 @@ public class BugService {
         );
     }
     
-    public BugResponseDTO findById(Long id) {
-        Bug bug = findBugById(id);
+    public BugResponseDTO findById(Long id, AppUser appUser) {
+        Bug bug = findBugByIdAndUser(id, appUser);
         return toResponseDTO(bug);
     }
     
-    private Bug findBugById(Long id) {
-        return bugRepository.findById(id)
+    private Bug findBugByIdAndUser(Long id, AppUser appUser) {
+        return bugRepository.findByIdAndProject_User(id, appUser)
                 .orElseThrow(() -> new ResourceNotFoundException("Bug não encontrado"));
     }
     
-    public List<BugResponseDTO> findByStatus(BugStatus status) {
-        return bugRepository.findByStatus(status)
+    public List<BugResponseDTO> findByStatus(BugStatus status, AppUser appUser) {
+        return bugRepository.findByProject_UserAndStatus(appUser, status)
                 .stream()
                 .map(this::toResponseDTO)
                 .toList();
     }
     
-    public List<BugResponseDTO> findBySeverity(BugSeverity severity) {
-        return bugRepository.findBySeverity(severity)
+    public List<BugResponseDTO> findBySeverity(BugSeverity severity, AppUser appUser) {
+        return bugRepository.findByProject_UserAndSeverity(appUser, severity)
                 .stream()
                 .map(this::toResponseDTO)
                 .toList();
     }
     
-    public List<BugResponseDTO> findByTechnology(String technology) {
+    public List<BugResponseDTO> findByTechnology(String technology, AppUser appUser) {
         if (technology == null || technology.isBlank()) {
             throw new BadRequestException("Informe uma tecnologia para filtrar os bugs");
         }
 
-        return bugRepository.findByTechnologyIgnoreCase(technology)
+        return bugRepository.findByProject_UserAndTechnologyIgnoreCase(appUser, technology)
                 .stream()
                 .map(this::toResponseDTO)
                 .toList();
     }
     
-    public BugResponseDTO create(BugRequestDTO requestDTO) {
-        Project project = findProjectById(requestDTO.getProjectId());
+    public BugResponseDTO create(BugRequestDTO requestDTO, AppUser appUser) {
+        Project project = findProjectByIdAndUser(requestDTO.getProjectId(), appUser);
 
         Bug bug = new Bug();
 
@@ -113,8 +114,8 @@ public class BugService {
         return toResponseDTO(savedBug);
     }
     
-    public List<BugResponseDTO> findByProject(Long projectId) {
-        Project project = findProjectById(projectId);
+    public List<BugResponseDTO> findByProject(Long projectId, AppUser appUser) {
+        Project project = findProjectByIdAndUser(projectId, appUser);
 
         return bugRepository.findByProject(project)
                 .stream()
@@ -122,14 +123,14 @@ public class BugService {
                 .toList();
     }
     
-    private Project findProjectById(Long id) {
-        return projectRepository.findById(id)
+    private Project findProjectByIdAndUser(Long id, AppUser appUser) {
+        return projectRepository.findByIdAndUser(id, appUser)
                 .orElseThrow(() -> new ResourceNotFoundException("Projeto não encontrado"));
     }
     
-    public BugResponseDTO update(Long id, BugRequestDTO requestDTO) {
-        Bug bug = findBugById(id);
-        Project project = findProjectById(requestDTO.getProjectId());
+    public BugResponseDTO update(Long id, BugRequestDTO requestDTO, AppUser appUser) {
+        Bug bug = findBugByIdAndUser(id, appUser);
+        Project project = findProjectByIdAndUser(requestDTO.getProjectId(), appUser);
 
         bug.setTitle(requestDTO.getTitle());
         bug.setDescription(requestDTO.getDescription());
@@ -153,8 +154,8 @@ public class BugService {
         return toResponseDTO(updatedBug);
     }
     
-    public void delete(Long id) {
-        Bug bug = findBugById(id);
+    public void delete(Long id, AppUser appUser) {
+        Bug bug = findBugByIdAndUser(id, appUser);
         bugRepository.delete(bug);
     }
 }
