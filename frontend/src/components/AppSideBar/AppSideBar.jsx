@@ -17,9 +17,22 @@ function getInitials(name) {
     .toUpperCase();
 }
 
+function getImageUrl(profileImageUrl) {
+  if (!profileImageUrl) {
+    return null;
+  }
+
+  if (profileImageUrl.startsWith('http')) {
+    return profileImageUrl;
+  }
+
+  return `${import.meta.env.VITE_API_URL}${profileImageUrl}`;
+}
+
 function AppSidebar({ userOverride }) {
   const storedUser = getAuthUser();
   const user = userOverride || storedUser;
+  const profileImageUrl = getImageUrl(user?.profileImageUrl);
 
   return (
     <aside className="app-sidebar">
@@ -57,16 +70,25 @@ function AppSidebar({ userOverride }) {
         <a href="#settings">⚙ Configurações</a>
       </nav>
 
-      <div className="app-sidebar__user">
+      <NavLink
+        to="/profile"
+        className={({ isActive }) =>
+          `app-sidebar__user ${isActive ? 'active' : ''}`
+        }
+      >
         <div className="app-sidebar__avatar">
-          {getInitials(user?.name)}
+          {profileImageUrl ? (
+            <img src={profileImageUrl} alt={`Foto de ${user?.name || 'usuário'}`} />
+          ) : (
+            getInitials(user?.name)
+          )}
         </div>
 
         <div>
           <strong>{user?.name || 'Dev'}</strong>
           <small>{user?.email || 'dev@devbug.com'}</small>
         </div>
-      </div>
+      </NavLink>
     </aside>
   );
 }

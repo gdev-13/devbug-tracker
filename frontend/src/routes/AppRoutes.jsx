@@ -14,6 +14,7 @@ import BugEdit from '../pages/BugEdit/BugEdit';
 import ProjectEdit from '../pages/ProjectEdit/ProjectEdit';
 import Bugs from '../pages/Bugs/Bugs';
 import Register from '../pages/Register/Register';
+import Profile from '../pages/Profile/Profile';
 
 function AppRoutes() {
   return (
@@ -85,6 +86,11 @@ function AppRoutes() {
         <Route path="/bugs" element={
           <ProtectedRoute>
             <Bugs />
+          </ProtectedRoute>
+        } />
+        <Route path="/profile" element={
+          <ProtectedRoute>
+            <Profile />
           </ProtectedRoute>
         } />
       </Routes>
