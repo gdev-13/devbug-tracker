@@ -8,6 +8,7 @@ import Login from '../pages/Login/Login';
 import Projects from '../pages/Projects/Projects';
 import ProjectCreate from '../pages/ProjectCreate/ProjectCreate';
 import ProjectDetails from '../pages/ProjectDetails/ProjectDetails';
+import BugCreate from '../pages/BugCreate/BugCreate';
 
 function AppRoutes() {
   return (
@@ -48,6 +49,11 @@ function AppRoutes() {
         <Route path="/projects/:id" element={
           <ProtectedRoute>
             <ProjectDetails />
+          </ProtectedRoute>
+        } />
+        <Route path="/projects/:projectId/bugs/new" element={
+          <ProtectedRoute>
+            <BugCreate />
           </ProtectedRoute>
         } />
       </Routes>
