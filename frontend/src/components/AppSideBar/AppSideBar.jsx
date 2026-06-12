@@ -23,7 +23,7 @@ function AppSidebar({ userOverride }) {
 
   return (
     <aside className="app-sidebar">
-      <Link to="/" className="app-sidebar__brand">
+      <Link to="/dashboard" className="app-sidebar__brand">
         <span className="app-sidebar__logo">⌬</span>
         <span>
           DevBug <strong>Tracker</strong>
@@ -34,11 +34,11 @@ function AppSidebar({ userOverride }) {
         <Link to="/dashboard" className="active">
           ⌂ Visão geral
         </Link>
-        <a href="#projects">▣ Projetos</a>
-        <a href="#bugs">⌬ Bugs</a>
-        <a href="#activity">▤ Atividades</a>
-        <a href="#reports">▥ Relatórios</a>
-        <a href="#settings">⚙ Configurações</a>
+        <Link to="/projects">▣ Projetos</Link>
+        <Link to="/bugs">⌬ Bugs</Link>
+        <Link to="/activity">▤ Atividades</Link>
+        <Link to="/reports">▥ Relatórios</Link>
+        <Link to="/settings">⚙ Configurações</Link>
       </nav>
 
       <div className="app-sidebar__user">
