@@ -106,7 +106,7 @@ function BugDetails() {
               Voltar
             </button>
 
-            <button type="button" className="button button--primary">
+            <button type="button" className="button button--primary" onClick={() => navigate(`/bugs/${id}/edit`)}>
               Editar bug
             </button>
           </div>

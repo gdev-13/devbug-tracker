@@ -10,6 +10,7 @@ import ProjectCreate from '../pages/ProjectCreate/ProjectCreate';
 import ProjectDetails from '../pages/ProjectDetails/ProjectDetails';
 import BugCreate from '../pages/BugCreate/BugCreate';
 import BugDetails from '../pages/BugDetails/BugDetails';
+import BugEdit from '../pages/BugEdit/BugEdit';
 
 function AppRoutes() {
   return (
@@ -60,6 +61,11 @@ function AppRoutes() {
         <Route path="/bugs/:id" element={
           <ProtectedRoute>
             <BugDetails />
+          </ProtectedRoute>
+        } />
+        <Route path="/bugs/:id/edit" element={
+          <ProtectedRoute>
+            <BugEdit />
           </ProtectedRoute>
         } />
       </Routes>

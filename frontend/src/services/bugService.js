@@ -17,3 +17,9 @@ export async function createBug(bugData) {
 
   return response.data;
 }
+
+export async function updateBug(bugId, bugData) {
+  const response = await api.put(`/bugs/${bugId}`, bugData);
+
+  return response.data;
+}
