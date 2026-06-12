@@ -11,6 +11,7 @@ import ProjectDetails from '../pages/ProjectDetails/ProjectDetails';
 import BugCreate from '../pages/BugCreate/BugCreate';
 import BugDetails from '../pages/BugDetails/BugDetails';
 import BugEdit from '../pages/BugEdit/BugEdit';
+import ProjectEdit from '../pages/ProjectEdit/ProjectEdit';
 
 function AppRoutes() {
   return (
@@ -66,6 +67,11 @@ function AppRoutes() {
         <Route path="/bugs/:id/edit" element={
           <ProtectedRoute>
             <BugEdit />
+          </ProtectedRoute>
+        } />
+        <Route path="/projects/:id/edit" element={
+          <ProtectedRoute>
+            <ProjectEdit />
           </ProtectedRoute>
         } />
       </Routes>

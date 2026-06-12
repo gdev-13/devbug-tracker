@@ -17,3 +17,9 @@ export async function createProject(projectData) {
 
   return response.data;
 }
+
+export async function updateProject(projectId, projectData) {
+  const response = await api.put(`/projects/${projectId}`, projectData);
+
+  return response.data;
+}

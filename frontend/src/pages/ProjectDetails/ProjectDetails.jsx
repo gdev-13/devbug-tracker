@@ -100,6 +100,13 @@ function ProjectDetails() {
             >
               Voltar
             </button>
+            <button
+              type="button"
+              className="button button--ghost"
+              onClick={() => navigate(`/projects/${id}/edit`)}
+            >
+              Editar projeto
+            </button>
 
             <button type="button" className="button button--primary" onClick={() => navigate(`/projects/${id}/bugs/new`)}>
               Adicionar bug
