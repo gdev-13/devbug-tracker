@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router';
 import AppSidebar from '../../components/AppSidebar/AppSidebar';
 import { clearAuthData } from '../../services/authStorage';
 import { getBugsByProjectId } from '../../services/bugService';
-import { getProjectById } from '../../services/projectsService';
+import { deleteProject, getProjectById } from '../../services/projectsService';
 
 import './ProjectDetails.css';
 
@@ -43,6 +43,7 @@ function ProjectDetails() {
   const [bugs, setBugs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const loadProjectDetails = useCallback(async () => {
     setIsLoading(true);
@@ -74,6 +75,37 @@ function ProjectDetails() {
   useEffect(() => {
     loadProjectDetails();
   }, [loadProjectDetails]);
+
+  async function handleDeleteProject() {
+    const confirmed = window.confirm(
+      'Tem certeza que deseja excluir este projeto? Os bugs vinculados a ele também podem ser removidos. Essa ação não pode ser desfeita.',
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    setIsDeleting(true);
+    setErrorMessage('');
+
+    try {
+      await deleteProject(id);
+
+      navigate('/projects');
+    } catch (error) {
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        clearAuthData();
+        navigate('/login');
+        return;
+      }
+
+      setErrorMessage(
+        'Não foi possível excluir o projeto. Verifique se ele ainda possui dependências ou se o backend está rodando.',
+      );
+    } finally {
+      setIsDeleting(false);
+    }
+  }
 
   return (
     <main className="project-details-page">
@@ -107,6 +139,15 @@ function ProjectDetails() {
             >
               Editar projeto
             </button>
+
+              <button
+                type="button"
+                className="button button--danger"
+                onClick={handleDeleteProject}
+                disabled={isDeleting}
+              >
+                {isDeleting ? 'Excluindo...' : 'Excluir projeto'}
+              </button>
 
             <button type="button" className="button button--primary" onClick={() => navigate(`/projects/${id}/bugs/new`)}>
               Adicionar bug

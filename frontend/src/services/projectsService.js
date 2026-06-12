@@ -23,3 +23,7 @@ export async function updateProject(projectId, projectData) {
 
   return response.data;
 }
+
+export async function deleteProject(projectId) {
+  await api.delete(`/projects/${projectId}`);
+}
