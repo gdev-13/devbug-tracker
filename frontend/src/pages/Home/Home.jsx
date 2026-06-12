@@ -3,6 +3,7 @@ import mascotProgramming from '../../assets/mascot-programming.png';
 import stepProject from '../../assets/step-project.png';
 import stepOrganize from '../../assets/step-organize.png';
 import stepResolve from '../../assets/step-resolve.png';
+import { Link } from 'react-router';
 
 function Home() {
   return (
@@ -22,9 +23,9 @@ function Home() {
         </nav>
 
         <div className="header__actions">
-          <a href="/login" className="button button--ghost">
+          <Link to="/login" className="button button--ghost">
             Entrar
-          </a>
+          </Link>
           <a href="/register" className="button button--primary">
             Criar conta
           </a>
