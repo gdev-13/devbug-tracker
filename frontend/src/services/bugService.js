@@ -23,3 +23,7 @@ export async function updateBug(bugId, bugData) {
 
   return response.data;
 }
+
+export async function deleteBug(bugId) {
+  await api.delete(`/bugs/${bugId}`);
+}

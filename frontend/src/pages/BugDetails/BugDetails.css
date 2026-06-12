@@ -190,6 +190,23 @@
   white-space: pre-wrap;
 }
 
+.button--danger {
+  color: #fee2e2;
+  border-color: rgba(239, 68, 68, 0.42);
+  background: rgba(239, 68, 68, 0.16);
+}
+
+.button--danger:hover {
+  border-color: rgba(248, 113, 113, 0.7);
+  background: rgba(239, 68, 68, 0.24);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.75;
+  transform: none;
+}
+
 @media (max-width: 1120px) {
   .bug-details-page {
     grid-template-columns: 1fr;

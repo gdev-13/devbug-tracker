@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router';
 
 import AppSidebar from '../../components/AppSidebar/AppSidebar';
 import { clearAuthData } from '../../services/authStorage';
-import { getBugById } from '../../services/bugService';
+import { deleteBug, getBugById } from '../../services/bugService';
 
 import './BugDetails.css';
 
@@ -51,6 +51,7 @@ function BugDetails() {
   const [bug, setBug] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const loadBugDetails = useCallback(async () => {
     setIsLoading(true);
@@ -78,6 +79,37 @@ function BugDetails() {
     loadBugDetails();
   }, [loadBugDetails]);
 
+  async function handleDeleteBug() {
+    const confirmed = window.confirm(
+      'Tem certeza que deseja excluir este bug? Essa ação não pode ser desfeita.',
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    setIsDeleting(true);
+    setErrorMessage('');
+
+    try {
+      await deleteBug(id);
+
+      navigate(bug?.projectId ? `/projects/${bug.projectId}` : '/projects');
+    } catch (error) {
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        clearAuthData();
+        navigate('/login');
+        return;
+      }
+
+      setErrorMessage(
+        'Não foi possível excluir o bug. Verifique se o backend está rodando.',
+      );
+    } finally {
+      setIsDeleting(false);
+    }
+  }
+
   return (
     <main className="bug-details-page">
       <AppSidebar />
@@ -104,6 +136,14 @@ function BugDetails() {
               }
             >
               Voltar
+            </button>
+            <button
+              type="button"
+              className="button button--danger"
+              onClick={handleDeleteBug}
+              disabled={isDeleting}
+            >
+              {isDeleting ? 'Excluindo...' : 'Excluir bug'}
             </button>
 
             <button type="button" className="button button--primary" onClick={() => navigate(`/bugs/${id}/edit`)}>
