@@ -1,5 +1,11 @@
 import api from './api';
 
+export async function getBugs() {
+  const response = await api.get('/bugs');
+  
+  return response.data;
+}
+
 export async function getBugsByProjectId(projectId) {
   const response = await api.get(`/bugs/project/${projectId}`);
 
