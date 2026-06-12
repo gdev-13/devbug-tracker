@@ -16,6 +16,7 @@ import Bugs from '../pages/Bugs/Bugs';
 import Register from '../pages/Register/Register';
 import Profile from '../pages/Profile/Profile';
 import Reports from '../pages/Reports/Reports';
+import Activities from '../pages/Activities/Activities';
 
 function AppRoutes() {
   return (
@@ -97,6 +98,11 @@ function AppRoutes() {
         <Route path="/reports" element={
           <ProtectedRoute>
             <Reports />
+          </ProtectedRoute>
+        } />
+        <Route path="/activities" element={
+          <ProtectedRoute>
+            <Activities />
           </ProtectedRoute>
         } />
       </Routes>

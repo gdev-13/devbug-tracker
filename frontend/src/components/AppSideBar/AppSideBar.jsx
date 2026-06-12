@@ -65,7 +65,13 @@ function AppSidebar({ userOverride }) {
           ⌬ Bugs
         </NavLink>
         
-        <a href="#activity">▤ Atividades</a>
+        <NavLink
+          to="/activities"
+          className={({ isActive }) => (isActive ? 'active' : '')}
+        >
+          ▤ Atividades
+        </NavLink>
+
         <NavLink
           to="/reports"
           className={({ isActive }) => (isActive ? 'active' : '')}
