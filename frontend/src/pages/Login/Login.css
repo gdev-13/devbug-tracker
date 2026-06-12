@@ -95,6 +95,22 @@
   margin-top: 1.55rem;
 }
 
+.login-form__error {
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  border-radius: 14px;
+  color: #fecaca;
+  background: rgba(239, 68, 68, 0.12);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.login-form__button:disabled {
+  cursor: not-allowed;
+  opacity: 0.75;
+  transform: none;
+}
+
 .form-group {
   display: grid;
   gap: 0.55rem;

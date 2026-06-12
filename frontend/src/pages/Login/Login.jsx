@@ -1,10 +1,60 @@
-import { Link } from 'react-router';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router';
+
+import { saveAuthData } from '../../services/authStorage';
+import { loginUser } from '../../services/authService';
 
 import './Login.css';
 
 function Login() {
-  function handleSubmit(event) {
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  function handleChange(event) {
+    const { name, value } = event.target;
+
+    setFormData((currentFormData) => ({
+      ...currentFormData,
+      [name]: value,
+    }));
+  }
+
+  function getLoginErrorMessage(error) {
+    if (error.response?.data?.message) {
+      return error.response.data.message;
+    }
+
+    if (!error.response) {
+      return 'Não foi possível conectar ao servidor. Verifique se o backend está rodando.';
+    }
+
+    return 'Não foi possível fazer login. Verifique email e senha.';
+  }
+
+  async function handleSubmit(event) {
     event.preventDefault();
+
+    setErrorMessage('');
+    setIsLoading(true);
+
+    try {
+      const authData = await loginUser(formData);
+
+      saveAuthData(authData);
+
+      navigate('/');
+    } catch (error) {
+      setErrorMessage(getLoginErrorMessage(error));
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -35,6 +85,12 @@ function Login() {
         </div>
 
         <form className="login-form" onSubmit={handleSubmit}>
+          {errorMessage && (
+            <div className="login-form__error" role="alert">
+              {errorMessage}
+            </div>
+          )}
+
           <div className="form-group">
             <label htmlFor="email">Email</label>
 
@@ -44,6 +100,9 @@ function Login() {
               type="email"
               placeholder="seuemail@exemplo.com"
               autoComplete="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
             />
           </div>
 
@@ -59,11 +118,18 @@ function Login() {
               type="password"
               placeholder="Digite sua senha"
               autoComplete="current-password"
+              value={formData.password}
+              onChange={handleChange}
+              required
             />
           </div>
 
-          <button type="submit" className="button button--primary login-form__button">
-            Entrar na plataforma
+          <button
+            type="submit"
+            className="button button--primary login-form__button"
+            disabled={isLoading}
+          >
+            {isLoading ? 'Entrando...' : 'Entrar na plataforma'}
           </button>
         </form>
 
