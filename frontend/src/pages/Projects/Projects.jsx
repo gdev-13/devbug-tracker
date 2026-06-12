@@ -77,7 +77,7 @@ function Projects() {
             </p>
           </div>
 
-          <button type="button" className="button button--primary">
+          <button type="button" className="button button--primary" onClick={() => navigate('/projects/new')}>
             Adicionar projeto
           </button>
         </header>
@@ -102,7 +102,7 @@ function Projects() {
               Crie seu primeiro projeto para começar a registrar bugs e
               acompanhar soluções.
             </p>
-            <button type="button" className="button button--primary">
+            <button type="button" className="button button--primary" onClick={() => navigate('/projects/new')}>
               Criar primeiro projeto
             </button>
           </section>

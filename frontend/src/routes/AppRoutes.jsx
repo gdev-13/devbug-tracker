@@ -6,6 +6,7 @@ import Dashboard from '../pages/Dashboard/Dashboard';
 import Home from '../pages/Home/Home';
 import Login from '../pages/Login/Login';
 import Projects from '../pages/Projects/Projects';
+import ProjectCreate from '../pages/ProjectCreate/ProjectCreate';
 
 function AppRoutes() {
   return (
@@ -34,6 +35,12 @@ function AppRoutes() {
         <Route path="/projects" element={
           <ProtectedRoute>
             <Projects />
+          </ProtectedRoute>
+          }
+        />
+        <Route path="/projects/new" element={
+          <ProtectedRoute>
+            <ProjectCreate />
           </ProtectedRoute>
           }
         />

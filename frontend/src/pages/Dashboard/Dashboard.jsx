@@ -76,7 +76,7 @@ function Dashboard() {
             </p>
           </div>
 
-          <button type="button" className="button button--primary" onClick={() => navigate('/projects')}>
+          <button type="button" className="button button--primary" onClick={() => navigate('/projects/new')}>
             Adicionar projeto
           </button>
         </header>
