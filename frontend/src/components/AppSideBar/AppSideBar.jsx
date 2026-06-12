@@ -66,7 +66,12 @@ function AppSidebar({ userOverride }) {
         </NavLink>
         
         <a href="#activity">▤ Atividades</a>
-        <a href="#reports">▥ Relatórios</a>
+        <NavLink
+          to="/reports"
+          className={({ isActive }) => (isActive ? 'active' : '')}
+        >
+          ▥ Relatórios
+        </NavLink>
         <a href="#settings">⚙ Configurações</a>
       </nav>
 

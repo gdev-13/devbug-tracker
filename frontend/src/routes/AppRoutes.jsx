@@ -15,6 +15,7 @@ import ProjectEdit from '../pages/ProjectEdit/ProjectEdit';
 import Bugs from '../pages/Bugs/Bugs';
 import Register from '../pages/Register/Register';
 import Profile from '../pages/Profile/Profile';
+import Reports from '../pages/Reports/Reports';
 
 function AppRoutes() {
   return (
@@ -91,6 +92,11 @@ function AppRoutes() {
         <Route path="/profile" element={
           <ProtectedRoute>
             <Profile />
+          </ProtectedRoute>
+        } />
+        <Route path="/reports" element={
+          <ProtectedRoute>
+            <Reports />
           </ProtectedRoute>
         } />
       </Routes>
