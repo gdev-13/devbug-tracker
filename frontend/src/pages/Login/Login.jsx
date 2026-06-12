@@ -49,7 +49,7 @@ function Login() {
 
       saveAuthData(authData);
 
-      navigate('/');
+      navigate('/dashboard');
     } catch (error) {
       setErrorMessage(getLoginErrorMessage(error));
     } finally {

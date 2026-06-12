@@ -1,0 +1,117 @@
+.app-sidebar {
+  min-height: calc(100dvh - 2rem);
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(180deg, rgba(15, 23, 42, 0.92), rgba(2, 6, 23, 0.88)),
+    radial-gradient(circle at 0% 0%, rgba(59, 130, 246, 0.14), transparent 15rem);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.app-sidebar__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 1.8rem;
+  padding: 0.2rem;
+  font-size: 1.12rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.app-sidebar__brand strong {
+  color: var(--cyan);
+}
+
+.app-sidebar__logo {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(56, 189, 248, 0.38);
+  border-radius: 13px;
+  color: var(--cyan);
+  background: rgba(8, 47, 73, 0.22);
+  box-shadow: 0 0 24px rgba(56, 189, 248, 0.16);
+}
+
+.app-sidebar__nav {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.app-sidebar__nav a {
+  padding: 0.78rem 0.85rem;
+  border-radius: 12px;
+  color: var(--text-soft);
+  font-size: 0.92rem;
+  font-weight: 600;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.app-sidebar__nav a:hover {
+  color: var(--cyan-soft);
+  background: rgba(59, 130, 246, 0.12);
+  transform: translateX(2px);
+}
+
+.app-sidebar__nav a.active {
+  color: #eff6ff;
+  background: rgba(59, 130, 246, 0.28);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.app-sidebar__user {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background:
+    linear-gradient(135deg, rgba(15, 23, 42, 0.88), rgba(2, 6, 23, 0.72)),
+    radial-gradient(circle at 0% 0%, rgba(59, 130, 246, 0.12), transparent 10rem);
+}
+
+.app-sidebar__avatar {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  color: white;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--cyan), var(--blue));
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.22);
+}
+
+.app-sidebar__user strong,
+.app-sidebar__user small {
+  display: block;
+}
+
+.app-sidebar__user strong {
+  max-width: 145px;
+  overflow: hidden;
+  color: var(--text);
+  font-size: 0.92rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-sidebar__user small {
+  max-width: 145px;
+  overflow: hidden;
+  color: var(--text-muted);
+  font-size: 0.76rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
