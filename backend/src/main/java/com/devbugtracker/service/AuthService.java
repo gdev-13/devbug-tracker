@@ -1,7 +1,10 @@
 package com.devbugtracker.service;
 
+import java.util.List;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.devbugtracker.dto.AppUserResponseDTO;
@@ -11,9 +14,13 @@ import com.devbugtracker.dto.RegisterRequestDTO;
 import com.devbugtracker.dto.UpdatePasswordRequestDTO;
 import com.devbugtracker.dto.UpdateUserRequestDTO;
 import com.devbugtracker.entity.AppUser;
+import com.devbugtracker.entity.Bug;
+import com.devbugtracker.entity.Project;
 import com.devbugtracker.exception.BadRequestException;
 import com.devbugtracker.exception.ResourceNotFoundException;
 import com.devbugtracker.repository.AppUserRepository;
+import com.devbugtracker.repository.BugRepository;
+import com.devbugtracker.repository.ProjectRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,6 +32,8 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
     private final ProfileImageService profileImageService;
+    private final BugRepository bugRepository;
+    private final ProjectRepository projectRepository;
 
     public AuthResponseDTO register(RegisterRequestDTO requestDTO) {
         if (appUserRepository.existsByEmail(requestDTO.getEmail())) {
@@ -122,5 +131,23 @@ public class AuthService {
         profileImageService.deleteProfileImage(oldProfileImageUrl);
 
         return toResponseDTO(updatedUser);
+    }
+    
+    @Transactional
+    public void deleteAuthenticatedUser(AppUser authenticatedUser) {
+        AppUser appUser = appUserRepository.findById(authenticatedUser.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+
+        String profileImageUrl = appUser.getProfileImageUrl();
+
+        List<Bug> bugs = bugRepository.findByProject_User(appUser);
+        bugRepository.deleteAll(bugs);
+
+        List<Project> projects = projectRepository.findByUser(appUser);
+        projectRepository.deleteAll(projects);
+
+        appUserRepository.delete(appUser);
+
+        profileImageService.deleteProfileImage(profileImageUrl);
     }
 }

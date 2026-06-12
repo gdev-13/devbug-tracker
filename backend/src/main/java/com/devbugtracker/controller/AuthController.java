@@ -3,6 +3,7 @@ package com.devbugtracker.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -84,5 +85,12 @@ public class AuthController {
     ) {
         AppUser appUser = getAuthenticatedUser(authentication);
         return authService.updateProfileImage(appUser, file);
+    }
+    
+    @DeleteMapping("/me")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteMe(Authentication authentication) {
+        AppUser appUser = getAuthenticatedUser(authentication);
+        authService.deleteAuthenticatedUser(appUser);
     }
 }
