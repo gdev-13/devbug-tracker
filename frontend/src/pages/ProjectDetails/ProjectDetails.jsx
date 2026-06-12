@@ -179,7 +179,9 @@ function ProjectDetails() {
 
                       <footer>
                         <small>{bug.technology || 'Tecnologia não informada'}</small>
-                        <button type="button">Ver bug →</button>
+                        <button type="button" onClick={() => navigate(`/bugs/${bug.id}`)}>
+                          Ver bug →
+                        </button>
                       </footer>
                     </article>
                   ))}

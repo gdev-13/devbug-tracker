@@ -9,6 +9,7 @@ import Projects from '../pages/Projects/Projects';
 import ProjectCreate from '../pages/ProjectCreate/ProjectCreate';
 import ProjectDetails from '../pages/ProjectDetails/ProjectDetails';
 import BugCreate from '../pages/BugCreate/BugCreate';
+import BugDetails from '../pages/BugDetails/BugDetails';
 
 function AppRoutes() {
   return (
@@ -54,6 +55,11 @@ function AppRoutes() {
         <Route path="/projects/:projectId/bugs/new" element={
           <ProtectedRoute>
             <BugCreate />
+          </ProtectedRoute>
+        } />
+        <Route path="/bugs/:id" element={
+          <ProtectedRoute>
+            <BugDetails />
           </ProtectedRoute>
         } />
       </Routes>
