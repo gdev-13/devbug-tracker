@@ -3,6 +3,7 @@ package com.devbugtracker.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.devbugtracker.dto.ProjectRequestDTO;
 import com.devbugtracker.dto.ProjectResponseDTO;
@@ -11,6 +12,7 @@ import com.devbugtracker.entity.Project;
 import com.devbugtracker.enums.ProjectStatus;
 import com.devbugtracker.exception.BadRequestException;
 import com.devbugtracker.exception.ResourceNotFoundException;
+import com.devbugtracker.repository.BugRepository;
 import com.devbugtracker.repository.ProjectRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class ProjectService {
 
 	private final ProjectRepository projectRepository;
+	private final BugRepository bugRepository;
 	
 	public List<ProjectResponseDTO> findAll(AppUser appUser) {
 	    return projectRepository.findByUser(appUser)
@@ -115,8 +118,12 @@ public class ProjectService {
         return toResponseDTO(updatedProject);
     }
     
+    @Transactional
     public void delete(Long id, AppUser appUser) {
         Project project = findProjectByIdAndUser(id, appUser);
+
+        bugRepository.deleteByProjectId(project.getId());
+
         projectRepository.delete(project);
     }
 }

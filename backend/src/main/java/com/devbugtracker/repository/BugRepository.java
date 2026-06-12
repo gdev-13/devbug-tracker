@@ -30,4 +30,6 @@ public interface BugRepository extends JpaRepository<Bug, Long> {
     long countByProject_UserAndStatus(AppUser user, BugStatus status);
 
     long countByProject_UserAndSeverity(AppUser user, BugSeverity severity);
+    
+    void deleteByProjectId(Long projectId);
 }
