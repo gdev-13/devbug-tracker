@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link, NavLink } from 'react-router';
 
 import { getAuthUser } from '../../services/authStorage';
 
@@ -31,18 +31,30 @@ function AppSidebar({ userOverride }) {
       </Link>
 
       <nav className="app-sidebar__nav" aria-label="Menu principal">
-        <Link to="/dashboard" className="active">
+        <NavLink
+          to="/dashboard"
+          className={({ isActive }) => (isActive ? 'active' : '')}
+        >
           ⌂ Visão geral
-        </Link>
-        <Link to="/projects">▣ Projetos</Link>
-        <Link to="/bugs">⌬ Bugs</Link>
-        <Link to="/activity">▤ Atividades</Link>
-        <Link to="/reports">▥ Relatórios</Link>
-        <Link to="/settings">⚙ Configurações</Link>
+        </NavLink>
+
+        <NavLink
+          to="/projects"
+          className={({ isActive }) => (isActive ? 'active' : '')}
+        >
+          ▣ Projetos
+        </NavLink>
+
+        <a href="#bugs">⌬ Bugs</a>
+        <a href="#activity">▤ Atividades</a>
+        <a href="#reports">▥ Relatórios</a>
+        <a href="#settings">⚙ Configurações</a>
       </nav>
 
       <div className="app-sidebar__user">
-        <div className="app-sidebar__avatar">{getInitials(user?.name)}</div>
+        <div className="app-sidebar__avatar">
+          {getInitials(user?.name)}
+        </div>
 
         <div>
           <strong>{user?.name || 'Dev'}</strong>
