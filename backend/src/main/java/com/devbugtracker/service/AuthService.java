@@ -2,6 +2,7 @@ package com.devbugtracker.service;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.devbugtracker.dto.AppUserResponseDTO;
 import com.devbugtracker.dto.AuthResponseDTO;
@@ -23,6 +24,7 @@ public class AuthService {
     private final AppUserRepository appUserRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
+    private final ProfileImageService profileImageService;
 
     public AuthResponseDTO register(RegisterRequestDTO requestDTO) {
         if (appUserRepository.existsByEmail(requestDTO.getEmail())) {
@@ -103,5 +105,22 @@ public class AuthService {
         appUser.setPassword(passwordEncoder.encode(requestDTO.getNewPassword()));
 
         appUserRepository.save(appUser);
+    }
+    
+    public AppUserResponseDTO updateProfileImage(AppUser authenticatedUser, MultipartFile file) {
+        AppUser appUser = appUserRepository.findById(authenticatedUser.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+
+        String oldProfileImageUrl = appUser.getProfileImageUrl();
+
+        String profileImageUrl = profileImageService.saveProfileImage(file);
+
+        appUser.setProfileImageUrl(profileImageUrl);
+
+        AppUser updatedUser = appUserRepository.save(appUser);
+
+        profileImageService.deleteProfileImage(oldProfileImageUrl);
+
+        return toResponseDTO(updatedUser);
     }
 }

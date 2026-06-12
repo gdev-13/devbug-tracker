@@ -33,6 +33,11 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
         String token = getTokenFromRequest(request);
+        System.out.println("=== AUTH FILTER ===");
+        System.out.println("Método: " + request.getMethod());
+        System.out.println("URI: " + request.getRequestURI());
+        System.out.println("Authorization: " + request.getHeader("Authorization"));
+        System.out.println("Token extraído: " + token);
 
         if (token != null) {
             String email = tokenService.validateToken(token);
