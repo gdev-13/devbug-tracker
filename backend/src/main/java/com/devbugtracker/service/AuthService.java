@@ -7,6 +7,7 @@ import com.devbugtracker.dto.AppUserResponseDTO;
 import com.devbugtracker.dto.AuthResponseDTO;
 import com.devbugtracker.dto.LoginRequestDTO;
 import com.devbugtracker.dto.RegisterRequestDTO;
+import com.devbugtracker.dto.UpdatePasswordRequestDTO;
 import com.devbugtracker.dto.UpdateUserRequestDTO;
 import com.devbugtracker.entity.AppUser;
 import com.devbugtracker.exception.BadRequestException;
@@ -84,5 +85,22 @@ public class AuthService {
         AppUser updatedUser = appUserRepository.save(appUser);
 
         return toResponseDTO(updatedUser);
+    }
+    
+    public void updatePassword(AppUser authenticatedUser, UpdatePasswordRequestDTO requestDTO) {
+        AppUser appUser = appUserRepository.findById(authenticatedUser.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+
+        if (!passwordEncoder.matches(requestDTO.getCurrentPassword(), appUser.getPassword())) {
+            throw new BadRequestException("Senha atual inválida");
+        }
+
+        if (!requestDTO.getNewPassword().equals(requestDTO.getConfirmPassword())) {
+            throw new BadRequestException("A nova senha e a confirmação não correspondem");
+        }
+
+        appUser.setPassword(passwordEncoder.encode(requestDTO.getNewPassword()));
+
+        appUserRepository.save(appUser);
     }
 }

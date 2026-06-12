@@ -14,6 +14,7 @@ import com.devbugtracker.dto.AppUserResponseDTO;
 import com.devbugtracker.dto.AuthResponseDTO;
 import com.devbugtracker.dto.LoginRequestDTO;
 import com.devbugtracker.dto.RegisterRequestDTO;
+import com.devbugtracker.dto.UpdatePasswordRequestDTO;
 import com.devbugtracker.dto.UpdateUserRequestDTO;
 import com.devbugtracker.entity.AppUser;
 import com.devbugtracker.exception.UnauthorizedException;
@@ -61,5 +62,15 @@ public class AuthController {
         }
 
         return appUser;
+    }
+    
+    @PutMapping("/me/password")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updatePassword(
+            @RequestBody @Valid UpdatePasswordRequestDTO requestDTO,
+            Authentication authentication
+    ) {
+        AppUser appUser = getAuthenticatedUser(authentication);
+        authService.updatePassword(appUser, requestDTO);
     }
 }
