@@ -133,6 +133,25 @@ public class AuthService {
         return toResponseDTO(updatedUser);
     }
     
+    public AppUserResponseDTO deleteProfileImage(AppUser authenticatedUser) {
+        AppUser appUser = appUserRepository.findById(authenticatedUser.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+
+        String profileImageUrl = appUser.getProfileImageUrl();
+
+        if (profileImageUrl == null || profileImageUrl.isBlank()) {
+            throw new BadRequestException("Usuário não possui foto de perfil");
+        }
+
+        appUser.setProfileImageUrl(null);
+
+        AppUser updatedUser = appUserRepository.save(appUser);
+
+        profileImageService.deleteProfileImage(profileImageUrl);
+
+        return toResponseDTO(updatedUser);
+    }
+    
     @Transactional
     public void deleteAuthenticatedUser(AppUser authenticatedUser) {
         AppUser appUser = appUserRepository.findById(authenticatedUser.getId())

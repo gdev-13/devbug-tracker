@@ -87,6 +87,12 @@ public class AuthController {
         return authService.updateProfileImage(appUser, file);
     }
     
+    @DeleteMapping("/me/profile-image")
+    public AppUserResponseDTO deleteProfileImage(Authentication authentication) {
+        AppUser appUser = getAuthenticatedUser(authentication);
+        return authService.deleteProfileImage(appUser);
+    }
+    
     @DeleteMapping("/me")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteMe(Authentication authentication) {
