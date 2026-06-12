@@ -142,7 +142,9 @@ function Projects() {
 
                 <footer className="project-card__footer">
                   <small>Criado em {formatDate(project.createdAt)}</small>
-                  <button type="button">Ver detalhes →</button>
+                  <button type="button" onClick={() => navigate(`/projects/${project.id}`)}>
+                    Ver detalhes →
+                  </button>
                 </footer>
               </article>
             ))}

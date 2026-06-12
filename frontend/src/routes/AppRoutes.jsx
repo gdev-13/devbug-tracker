@@ -7,6 +7,7 @@ import Home from '../pages/Home/Home';
 import Login from '../pages/Login/Login';
 import Projects from '../pages/Projects/Projects';
 import ProjectCreate from '../pages/ProjectCreate/ProjectCreate';
+import ProjectDetails from '../pages/ProjectDetails/ProjectDetails';
 
 function AppRoutes() {
   return (
@@ -44,6 +45,11 @@ function AppRoutes() {
           </ProtectedRoute>
           }
         />
+        <Route path="/projects/:id" element={
+          <ProtectedRoute>
+            <ProjectDetails />
+          </ProtectedRoute>
+        } />
       </Routes>
     </BrowserRouter>
   );
