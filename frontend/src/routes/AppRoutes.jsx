@@ -13,6 +13,7 @@ import BugDetails from '../pages/BugDetails/BugDetails';
 import BugEdit from '../pages/BugEdit/BugEdit';
 import ProjectEdit from '../pages/ProjectEdit/ProjectEdit';
 import Bugs from '../pages/Bugs/Bugs';
+import Register from '../pages/Register/Register';
 
 function AppRoutes() {
   return (
@@ -28,6 +29,12 @@ function AppRoutes() {
         <Route path="/login" element={
           <PublicOnlyRoute>
             <Login />
+          </PublicOnlyRoute>
+          }
+        />
+        <Route path="/register" element={
+          <PublicOnlyRoute>
+            <Register />
           </PublicOnlyRoute>
           }
         />
