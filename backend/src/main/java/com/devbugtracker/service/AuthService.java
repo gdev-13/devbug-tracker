@@ -51,6 +51,7 @@ public class AuthService {
                 appUser.getId(),
                 appUser.getName(),
                 appUser.getEmail(),
+                appUser.getProfileImageUrl(),
                 appUser.getCreatedAt()
         );
     }

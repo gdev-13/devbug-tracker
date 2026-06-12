@@ -36,6 +36,7 @@ public class AppUser {
     private LocalDateTime createdAt;
     @OneToMany(mappedBy = "user")
     private List<Project> projects = new ArrayList<>();
+    private String profileImageUrl;
     @PrePersist
     public void onCreate() {
         createdAt = LocalDateTime.now();
