@@ -67,9 +67,25 @@ function BugDetails() {
         return;
       }
 
-      setErrorMessage(
-        'Não foi possível carregar os detalhes do bug. Verifique se o backend está rodando.',
-      );
+      if (error.response?.status === 404) {
+        navigate('/not-found', {
+          replace: true,
+          state: {
+            title: 'Bug não encontrado',
+            message:
+              'O bug acessado não existe, foi excluído ou não está disponível para este usuário.',
+          },
+        });
+
+        return;
+      }
+
+      if (!error.response) {
+        setErrorMessage('Não foi possível conectar à API. Verifique sua conexão e tente novamente.');
+        return;
+      }
+
+      setErrorMessage('Não foi possível carregar os detalhes do bug. Tente novamente em instantes.');
     } finally {
       setIsLoading(false);
     }

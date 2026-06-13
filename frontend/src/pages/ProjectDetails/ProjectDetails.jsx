@@ -64,9 +64,25 @@ function ProjectDetails() {
         return;
       }
 
-      setErrorMessage(
-        'Não foi possível carregar os detalhes do projeto. Verifique se o backend está rodando.',
-      );
+      if (error.response?.status === 404) {
+        navigate('/not-found', {
+          replace: true,
+          state: {
+            title: 'Projeto não encontrado',
+            message:
+              'O projeto acessado não existe, foi excluído ou não está disponível para este usuário.',
+          },
+        });
+
+        return;
+      }
+
+      if (!error.response) {
+        setErrorMessage('Não foi possível conectar à API. Verifique sua conexão e tente novamente.');
+        return;
+      }
+
+      setErrorMessage('Não foi possível carregar os detalhes do projeto. Tente novamente em instantes.');
     } finally {
       setIsLoading(false);
     }
@@ -100,7 +116,7 @@ function ProjectDetails() {
       }
 
       setErrorMessage(
-        'Não foi possível excluir o projeto. Verifique se ele ainda possui dependências ou se o backend está rodando.',
+        'Não foi possível excluir o projeto..',
       );
     } finally {
       setIsDeleting(false);

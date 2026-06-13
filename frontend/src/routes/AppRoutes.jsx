@@ -113,6 +113,7 @@ function AppRoutes() {
           </ProtectedRoute>
         } />
         <Route path="*" element={<NotFound />} />
+        <Route path="/not-found" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
