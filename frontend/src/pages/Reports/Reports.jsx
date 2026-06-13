@@ -389,8 +389,15 @@ function Reports() {
   const trendData = useMemo(() => {
     return getLastSixMonths().map((monthInfo) => ({
       label: monthInfo.label,
-      created: filteredBugs.filter((bug) => isSameMonth(bug.createdAt, monthInfo)).length,
-      resolved: filteredBugs.filter((bug) => isSameMonth(bug.resolvedAt, monthInfo)).length,
+      created: filteredBugs.filter((bug) =>
+        isSameMonth(bug.createdAt, monthInfo),
+      ).length,
+      resolved: filteredBugs.filter((bug) => {
+        const resolvedDate =
+          bug.resolvedAt || (bug.status === 'RESOLVED' ? bug.createdAt : null);
+
+        return isSameMonth(resolvedDate, monthInfo);
+      }).length,
     }));
   }, [filteredBugs]);
 
