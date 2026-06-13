@@ -1,0 +1,63 @@
+.not-found-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background:
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.18), transparent 32rem),
+    var(--color-bg, #020617);
+  color: var(--color-text, #e5e7eb);
+}
+
+.not-found-card {
+  width: min(100%, 520px);
+  padding: 2.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 28px;
+  background: rgba(15, 23, 42, 0.88);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+  text-align: center;
+}
+
+.not-found-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.16);
+  color: #93c5fd;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.not-found-card h1 {
+  margin-bottom: 0.9rem;
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.not-found-card p {
+  margin: 0 auto 1.8rem;
+  color: var(--color-muted, #94a3b8);
+  line-height: 1.7;
+}
+
+.not-found-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.9rem 1.25rem;
+  border-radius: 14px;
+  background: var(--color-primary, #2563eb);
+  color: #ffffff;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.not-found-button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+}

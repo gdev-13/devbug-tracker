@@ -18,6 +18,7 @@ import Profile from '../pages/Profile/Profile';
 import Reports from '../pages/Reports/Reports';
 import Activities from '../pages/Activities/Activities';
 import Settings from '../pages/Settings/Settings';
+import NotFound from '../pages/NotFound/NotFound';
 
 function AppRoutes() {
   return (
@@ -111,6 +112,7 @@ function AppRoutes() {
             <Settings />
           </ProtectedRoute>
         } />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
