@@ -71,3 +71,13 @@ export function applyAppSettings(settings = getAppSettings()) {
 export function getStartPage() {
   return getAppSettings().startPage;
 }
+
+export function applyDefaultPublicAppearance() {
+  const accent = accentPresets.blue;
+
+  Object.entries(accent).forEach(([property, value]) => {
+    document.documentElement.style.setProperty(property, value);
+  });
+
+  document.body.dataset.density = defaultSettings.density;
+}
