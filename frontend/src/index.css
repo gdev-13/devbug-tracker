@@ -34,6 +34,14 @@
   --radius-lg: 28px;
   --radius-md: 20px;
   --radius-sm: 14px;
+
+  --status-open: #f59e0b;
+  --status-progress: #38bdf8;
+  --status-resolved: #22c55e;
+  --status-critical: #ef4444;
+  --status-high: #fb923c;
+  --status-medium: #60a5fa;
+  --status-low: #86efac;
 }
 
 * {
@@ -137,4 +145,196 @@ button {
   min-width: 220px;
   min-height: 56px;
   font-size: 1rem;
+}
+
+body[data-density='compact'] .button {
+  min-height: 38px;
+  padding: 0.55rem 0.85rem;
+  font-size: 0.88rem;
+}
+
+body[data-density='compact'] input,
+body[data-density='compact'] select,
+body[data-density='compact'] textarea {
+  min-height: 38px;
+  padding-inline: 0.8rem;
+  font-size: 0.88rem;
+}
+
+body[data-density='compact'] .app-sidebar {
+  padding: 0.8rem;
+}
+
+body[data-density='compact'] .app-sidebar__brand {
+  margin-bottom: 0.8rem;
+}
+
+body[data-density='compact'] .app-sidebar__nav {
+  gap: 0.35rem;
+}
+
+body[data-density='compact'] .app-sidebar__nav a {
+  min-height: 38px;
+  padding: 0.55rem 0.7rem;
+  font-size: 0.88rem;
+}
+
+body[data-density='compact'] .app-sidebar__user {
+  padding: 0.65rem;
+}
+
+body[data-density='compact'] .app-sidebar__avatar {
+  width: 38px;
+  height: 38px;
+}
+
+body[data-density='compact'] .dashboard-page,
+body[data-density='compact'] .projects-page,
+body[data-density='compact'] .project-details-page,
+body[data-density='compact'] .project-create-page,
+body[data-density='compact'] .project-edit-page,
+body[data-density='compact'] .bugs-page,
+body[data-density='compact'] .bug-create-page,
+body[data-density='compact'] .bug-details-page,
+body[data-density='compact'] .bug-edit-page,
+body[data-density='compact'] .reports-page,
+body[data-density='compact'] .activities-page,
+body[data-density='compact'] .profile-page,
+body[data-density='compact'] .settings-page {
+  gap: 0.75rem;
+  padding: 0.75rem;
+}
+
+body[data-density='compact'] .dashboard-content,
+body[data-density='compact'] .projects-content,
+body[data-density='compact'] .project-details-content,
+body[data-density='compact'] .project-create-content,
+body[data-density='compact'] .project-edit-content,
+body[data-density='compact'] .bugs-content,
+body[data-density='compact'] .bug-create-content,
+body[data-density='compact'] .bug-details-content,
+body[data-density='compact'] .bug-edit-content,
+body[data-density='compact'] .reports-content,
+body[data-density='compact'] .activities-content,
+body[data-density='compact'] .profile-content,
+body[data-density='compact'] .settings-content {
+  padding: 0.75rem;
+}
+
+body[data-density='compact'] .dashboard-header,
+body[data-density='compact'] .projects-header,
+body[data-density='compact'] .project-details-header,
+body[data-density='compact'] .project-create-header,
+body[data-density='compact'] .project-edit-header,
+body[data-density='compact'] .bugs-header,
+body[data-density='compact'] .bug-create-header,
+body[data-density='compact'] .bug-details-header,
+body[data-density='compact'] .bug-edit-header,
+body[data-density='compact'] .reports-header,
+body[data-density='compact'] .activities-header,
+body[data-density='compact'] .profile-header,
+body[data-density='compact'] .settings-header {
+  margin-bottom: 0.8rem;
+}
+
+body[data-density='compact'] .dashboard-header h1,
+body[data-density='compact'] .projects-header h1,
+body[data-density='compact'] .project-details-header h1,
+body[data-density='compact'] .project-create-header h1,
+body[data-density='compact'] .project-edit-header h1,
+body[data-density='compact'] .bugs-header h1,
+body[data-density='compact'] .bug-create-header h1,
+body[data-density='compact'] .bug-details-header h1,
+body[data-density='compact'] .bug-edit-header h1,
+body[data-density='compact'] .reports-header h1,
+body[data-density='compact'] .activities-header h1,
+body[data-density='compact'] .profile-header h1,
+body[data-density='compact'] .settings-header h1 {
+  font-size: clamp(1.75rem, 3.4vw, 2.55rem);
+}
+
+body[data-density='compact'] .dashboard-header p,
+body[data-density='compact'] .projects-header p,
+body[data-density='compact'] .project-details-header p,
+body[data-density='compact'] .project-create-header p,
+body[data-density='compact'] .project-edit-header p,
+body[data-density='compact'] .bugs-header p,
+body[data-density='compact'] .bug-create-header p,
+body[data-density='compact'] .bug-details-header p,
+body[data-density='compact'] .bug-edit-header p,
+body[data-density='compact'] .reports-header p,
+body[data-density='compact'] .activities-header p,
+body[data-density='compact'] .profile-header p,
+body[data-density='compact'] .settings-header p {
+  margin-top: 0.5rem;
+  line-height: 1.4;
+  font-size: 0.92rem;
+}
+
+body[data-density='compact'] .dashboard-card,
+body[data-density='compact'] .project-card,
+body[data-density='compact'] .bug-list-card,
+body[data-density='compact'] .reports-panel,
+body[data-density='compact'] .activity-item,
+body[data-density='compact'] .profile-card,
+body[data-density='compact'] .settings-card,
+body[data-density='compact'] .project-details-card,
+body[data-density='compact'] .bug-details-card {
+  padding: 0.75rem;
+}
+
+body[data-density='compact'] .dashboard-grid,
+body[data-density='compact'] .projects-grid,
+body[data-density='compact'] .reports-grid,
+body[data-density='compact'] .activities-timeline,
+body[data-density='compact'] .profile-grid,
+body[data-density='compact'] .settings-grid,
+body[data-density='compact'] .bugs-list {
+  gap: 0.65rem;
+}
+
+body[data-density='compact'] .reports-summary,
+body[data-density='compact'] .activities-summary,
+body[data-density='compact'] .dashboard-summary {
+  gap: 0.65rem;
+  margin-bottom: 0.75rem;
+}
+
+body[data-density='compact'] .reports-summary article,
+body[data-density='compact'] .activities-summary article {
+  padding: 0.75rem;
+}
+
+body[data-density='compact'] .reports-filters,
+body[data-density='compact'] .activities-filters {
+  padding: 0.65rem;
+  margin-bottom: 0.75rem;
+}
+
+body[data-density='compact'] .profile-form,
+body[data-density='compact'] .settings-options,
+body[data-density='compact'] .reports-ranking,
+body[data-density='compact'] .activities-timeline {
+  gap: 0.65rem;
+}
+
+body[data-density='compact'] .profile-avatar {
+  width: 108px;
+  height: 108px;
+}
+
+body[data-density='compact'] .profile-card__header,
+body[data-density='compact'] .settings-card__header,
+body[data-density='compact'] .reports-panel__header {
+  margin-bottom: 0.7rem;
+}
+
+body[data-density='compact'] .settings-options button {
+  padding: 0.7rem;
+}
+
+body[data-density='compact'] .settings-color,
+body[data-density='compact'] .settings-option-icon {
+  width: 36px;
+  height: 36px;
 }

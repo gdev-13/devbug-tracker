@@ -4,6 +4,8 @@ import { Link, useNavigate } from 'react-router';
 import { saveAuthData } from '../../services/authStorage';
 import { loginUser } from '../../services/authService';
 
+import { getStartPage } from '../../services/settingsStorage';
+
 import './Login.css';
 
 function Login() {
@@ -49,7 +51,7 @@ function Login() {
 
       saveAuthData(authData);
 
-      navigate('/dashboard');
+      navigate(getStartPage());
     } catch (error) {
       setErrorMessage(getLoginErrorMessage(error));
     } finally {

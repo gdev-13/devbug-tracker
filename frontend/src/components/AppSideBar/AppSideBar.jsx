@@ -78,7 +78,14 @@ function AppSidebar({ userOverride }) {
         >
           ▥ Relatórios
         </NavLink>
-        <a href="#settings">⚙ Configurações</a>
+        
+        <NavLink
+          to="/settings"
+          className={({ isActive }) => (isActive ? 'active' : '')}
+        >
+          ⚙ Configurações
+        </NavLink>
+
       </nav>
 
       <NavLink

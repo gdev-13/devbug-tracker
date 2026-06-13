@@ -329,6 +329,18 @@
   line-height: 1;
 }
 
+.dot--status-open {
+  background: var(--status-open);
+}
+
+.dot--status-progress {
+  background: var(--status-progress);
+}
+
+.dot--status-resolved {
+  background: var(--status-resolved);
+}
+
 .dashboard-summary__technical {
   display: grid;
   gap: 0.8rem;

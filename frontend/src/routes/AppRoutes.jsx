@@ -17,6 +17,7 @@ import Register from '../pages/Register/Register';
 import Profile from '../pages/Profile/Profile';
 import Reports from '../pages/Reports/Reports';
 import Activities from '../pages/Activities/Activities';
+import Settings from '../pages/Settings/Settings';
 
 function AppRoutes() {
   return (
@@ -103,6 +104,11 @@ function AppRoutes() {
         <Route path="/activities" element={
           <ProtectedRoute>
             <Activities />
+          </ProtectedRoute>
+        } />
+        <Route path="/settings" element={
+          <ProtectedRoute>
+            <Settings />
           </ProtectedRoute>
         } />
       </Routes>

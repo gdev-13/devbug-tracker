@@ -29,9 +29,9 @@ function getDonutBackground(dashboard) {
   return `
     radial-gradient(circle, #0f172a 0 42%, transparent 43%),
     conic-gradient(
-      var(--blue) 0 ${openEnd}%,
-      var(--purple) ${openEnd}% ${inProgressEnd}%,
-      var(--green) ${inProgressEnd}% ${resolvedEnd}%,
+      var(--status-open) 0 ${openEnd}%,
+      var(--status-progress) ${openEnd}% ${inProgressEnd}%,
+      var(--status-resolved) ${inProgressEnd}% ${resolvedEnd}%,
       rgba(148, 163, 184, 0.18) ${resolvedEnd}% 100%
     )
   `;
@@ -94,19 +94,19 @@ function DashboardSummary({ dashboard, compact = false }) {
       label: 'Abertos',
       value: dashboard.openBugs,
       percentage: getPercentage(dashboard.openBugs, dashboard.totalBugs),
-      dotClassName: 'dot--blue',
+      dotClassName: 'dot--status-open',
     },
     {
       label: 'Em andamento',
       value: dashboard.inProgressBugs,
       percentage: getPercentage(dashboard.inProgressBugs, dashboard.totalBugs),
-      dotClassName: 'dot--purple',
+      dotClassName: 'dot--status-progress',
     },
     {
       label: 'Resolvidos',
       value: dashboard.resolvedBugs,
       percentage: getPercentage(dashboard.resolvedBugs, dashboard.totalBugs),
-      dotClassName: 'dot--green',
+      dotClassName: 'dot--status-resolved',
     },
   ];
 
@@ -124,7 +124,7 @@ function DashboardSummary({ dashboard, compact = false }) {
     {
       label: 'Média',
       value: dashboard.mediumSeverityBugs,
-      dotClassName: 'dot--blue',
+      dotClassName: 'dot--status-progress',
     },
     {
       label: 'Baixa',
