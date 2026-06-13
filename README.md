@@ -386,6 +386,24 @@ Outras melhorias futuras incluem:
 
 ---
 
+## 📷 Capturas de Tela (prints)
+Os prints disponíveis em `docs/images/` mostram as telas principais da aplicação e exemplos de uso. Abaixo há uma lista dos arquivos encontrados e uma breve descrição de cada um:
+
+- `docs/images/home.png`: Tela inicial pública (Home) com apresentação da aplicação.
+- `docs/images/login.png`: Tela de login do usuário.
+- `docs/images/cadastro.png`: Tela de cadastro/registro de novo usuário.
+- `docs/images/dashboard.png`: Dashboard com métricas gerais, gráficos e indicadores.
+- `docs/images/projetos.png`: Listagem de projetos do usuário.
+- `docs/images/projeto-detalhes.png`: Página de detalhes de um projeto específico.
+- `docs/images/bugs.png`: Listagem geral de bugs.
+- `docs/images/bug-detalhes.png`: Página de detalhes de um bug, incluindo mensagem de erro e solução.
+- `docs/images/atividades.png`: Linha do tempo de atividades mostrando eventos recentes.
+- `docs/images/perfil.png`: Página de perfil do usuário com edição de dados e foto.
+- `docs/images/configuracoes.png`: Tela de configurações (tema, densidade, página inicial).
+- `docs/images/relatorio.png`: Tela de relatórios com filtros e gráficos.
+
+---
+
 ## 📌 Status do Projeto
 
 Projeto em desenvolvimento avançado, com as principais funcionalidades implementadas e integradas entre frontend e backend.
