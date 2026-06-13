@@ -111,7 +111,6 @@ function Login() {
           <div className="form-group">
             <div className="form-group__top">
               <label htmlFor="password">Senha</label>
-              <a href="#forgot-password">Esqueceu a senha?</a>
             </div>
 
             <input
