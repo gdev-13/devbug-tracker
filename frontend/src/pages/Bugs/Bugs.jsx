@@ -63,7 +63,7 @@ function Bugs() {
       }
 
       setErrorMessage(
-        'Não foi possível carregar os bugs. Verifique se o backend está rodando.',
+        'Não foi possível carregar os bugs. Tente novamente mais tarde.',
       );
     } finally {
       setIsLoading(false);

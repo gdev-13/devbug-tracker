@@ -49,7 +49,7 @@ function Projects() {
       }
 
       setErrorMessage(
-        'Não foi possível carregar os projetos. Verifique se o backend está rodando.',
+        'Não foi possível carregar os projetos. Tente novamente mais tarde.',
       );
     } finally {
       setIsLoading(false);

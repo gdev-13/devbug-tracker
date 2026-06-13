@@ -20,7 +20,7 @@ function getCreateProjectErrorMessage(error) {
   }
 
   if (!error.response) {
-    return 'Não foi possível conectar ao servidor. Verifique se o backend está rodando.';
+    return 'Não foi possível conectar ao servidor. Tente novamente mais tarde.';
   }
 
   return 'Não foi possível criar o projeto. Verifique os dados informados.';

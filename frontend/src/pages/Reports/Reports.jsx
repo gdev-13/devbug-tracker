@@ -307,7 +307,7 @@ function Reports() {
         return;
       }
 
-      setErrorMessage('Não foi possível carregar os relatórios. Verifique se o backend está rodando.');
+      setErrorMessage('Não foi possível carregar os relatórios. Tente novamente mais tarde.');
     } finally {
       setIsLoading(false);
     }

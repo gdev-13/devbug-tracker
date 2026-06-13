@@ -20,7 +20,7 @@ function getProjectErrorMessage(error) {
   }
 
   if (!error.response) {
-    return 'Não foi possível conectar ao servidor. Verifique se o backend está rodando.';
+    return 'Não foi possível conectar ao servidor. Tente novamente mais tarde.';
   }
 
   return 'Não foi possível salvar o projeto. Verifique os dados informados.';
@@ -56,7 +56,7 @@ function ProjectEdit() {
       }
 
       setErrorMessage(
-        'Não foi possível carregar o projeto. Verifique se o backend está rodando.',
+        'Não foi possível carregar o projeto. Tente novamente mais tarde.',
       );
     } finally {
       setIsLoading(false);

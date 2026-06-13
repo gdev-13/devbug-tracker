@@ -55,7 +55,7 @@ function getProfileErrorMessage(error, fallbackMessage) {
   }
 
   if (!error.response) {
-    return 'Não foi possível conectar ao servidor. Verifique se o backend está rodando.';
+    return 'Não foi possível conectar ao servidor. Tente novamente mais tarde.';
   }
 
   return fallbackMessage;
@@ -63,7 +63,7 @@ function getProfileErrorMessage(error, fallbackMessage) {
 
 function getPasswordErrorMessage(error) {
   if (!error.response) {
-    return 'Não foi possível conectar ao servidor. Verifique se o backend está rodando.';
+    return 'Não foi possível conectar ao servidor. Tente novamente mais tarde.';
   }
 
   const backendMessage = error.response?.data?.message;
@@ -118,7 +118,7 @@ function Profile() {
       setErrorMessage(
         getProfileErrorMessage(
           error,
-          'Não foi possível carregar o perfil. Verifique se o backend está rodando.',
+          'Não foi possível carregar o perfil. Tente novamente mais tarde.',
         ),
       );
     } finally {

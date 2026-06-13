@@ -48,7 +48,7 @@ function Dashboard() {
       }
 
       setErrorMessage(
-        'Não foi possível carregar o dashboard. Verifique se o backend está rodando.',
+        'Não foi possível carregar o dashboard. Tente novamente mais tarde.',
       );
     } finally {
       setIsLoading(false);

@@ -132,7 +132,7 @@ function Activities() {
       }
 
       setErrorMessage(
-        'Não foi possível carregar as atividades. Verifique se o backend está rodando.',
+        'Não foi possível carregar as atividades. Tente novamente mais tarde.',
       );
     } finally {
       setIsLoading(false);

@@ -19,7 +19,7 @@ function getRegisterErrorMessage(error) {
   }
 
   if (!error.response) {
-    return 'Não foi possível conectar ao servidor. Verifique se o backend está rodando.';
+    return 'Não foi possível conectar ao servidor. Tente novamente mais tarde.';
   }
 
   return 'Não foi possível criar a conta. Verifique os dados informados.';

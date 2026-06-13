@@ -119,7 +119,7 @@ function BugDetails() {
       }
 
       setErrorMessage(
-        'Não foi possível excluir o bug. Verifique se o backend está rodando.',
+        'Não foi possível excluir o bug. Tente novamente mais tarde.',
       );
     } finally {
       setIsDeleting(false);

@@ -26,7 +26,7 @@ function getBugFormErrorMessage(error) {
   }
 
   if (!error.response) {
-    return 'Não foi possível conectar ao servidor. Verifique se o backend está rodando.';
+    return 'Não foi possível conectar ao servidor. Tente novamente mais tarde.';
   }
 
   return 'Não foi possível salvar o bug. Verifique os dados informados.';
@@ -68,7 +68,7 @@ function BugEdit() {
       }
 
       setErrorMessage(
-        'Não foi possível carregar o bug. Verifique se o backend está rodando.',
+        'Não foi possível carregar o bug. Tente novamente mais tarde.',
       );
     } finally {
       setIsLoading(false);
