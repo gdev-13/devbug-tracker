@@ -38,6 +38,10 @@ export async function removeProfileImage() {
   return response.data;
 }
 
-export async function deleteAccount() {
-  await api.delete('/auth/me');
+export async function deleteAccount(data) {
+  const response = await api.delete('/auth/me', {
+    data,
+  });
+
+  return response.data;
 }

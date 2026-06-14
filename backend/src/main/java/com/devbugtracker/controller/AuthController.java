@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.devbugtracker.dto.AppUserResponseDTO;
 import com.devbugtracker.dto.AuthResponseDTO;
+import com.devbugtracker.dto.DeleteAccountRequestDTO;
 import com.devbugtracker.dto.ForgotPasswordRequestDTO;
 import com.devbugtracker.dto.LoginRequestDTO;
 import com.devbugtracker.dto.MessageResponseDTO;
@@ -100,9 +101,12 @@ public class AuthController {
     
     @DeleteMapping("/me")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteMe(Authentication authentication) {
+    public void deleteMe(
+            Authentication authentication,
+            @Valid @RequestBody DeleteAccountRequestDTO request
+    ) {
         AppUser appUser = getAuthenticatedUser(authentication);
-        authService.deleteAuthenticatedUser(appUser);
+        authService.deleteAuthenticatedUser(appUser, request);
     }
     
     @PostMapping("/forgot-password")

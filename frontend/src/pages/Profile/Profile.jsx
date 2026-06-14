@@ -95,6 +95,9 @@ function Profile() {
   const [dangerMessage, setDangerMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [deletePassword, setDeletePassword] = useState('');
+
   const loadProfile = useCallback(async () => {
     setIsLoading(true);
     setErrorMessage('');
@@ -305,21 +308,38 @@ function Profile() {
     navigate('/login');
   }
 
-  async function handleDeleteAccount() {
-    const confirmed = window.confirm(
-      'Tem certeza que deseja excluir sua conta? Todos os seus projetos e bugs serão removidos. Essa ação não pode ser desfeita.',
-    );
+  function openDeleteModal() {
+    setDangerMessage('');
+    setDeletePassword('');
+    setIsDeleteModalOpen(true);
+  }
 
-    if (!confirmed) {
+  function closeDeleteModal() {
+    if (isDeletingAccount) {
       return;
     }
 
+    setDeletePassword('');
+    setIsDeleteModalOpen(false);
+  }
+
+  async function handleDeleteAccount(event) {
+    event.preventDefault();
+
     setDangerMessage('');
     setErrorMessage('');
+
+    if (!deletePassword.trim()) {
+      setDangerMessage('Informe sua senha para confirmar a exclusão da conta.');
+      return;
+    }
+
     setIsDeletingAccount(true);
 
     try {
-      await deleteAccount();
+      await deleteAccount({
+        password: deletePassword,
+      });
 
       clearAuthData();
       navigate('/');
@@ -333,7 +353,7 @@ function Profile() {
       setDangerMessage(
         getProfileErrorMessage(
           error,
-          'Não foi possível excluir a conta. Tente novamente.',
+          'Não foi possível excluir a conta. Verifique sua senha e tente novamente.',
         ),
       );
     } finally {
@@ -556,7 +576,7 @@ function Profile() {
               <button
                 type="button"
                 className="button button--danger"
-                onClick={handleDeleteAccount}
+                onClick={openDeleteModal}
                 disabled={isDeletingAccount}
               >
                 {isDeletingAccount ? 'Excluindo...' : 'Excluir minha conta'}
@@ -565,6 +585,68 @@ function Profile() {
           </div>
         )}
       </section>
+      {isDeleteModalOpen && (
+        <div className="profile-modal-overlay" role="presentation">
+          <div
+            className="profile-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="delete-account-title"
+          >
+            <div className="profile-modal__header">
+              <span className="profile-modal__tag">Ação permanente</span>
+
+              <h2 id="delete-account-title">Excluir conta?</h2>
+
+              <p>
+                Esta ação removerá sua conta, projetos e bugs vinculados. Para
+                confirmar, informe sua senha.
+              </p>
+            </div>
+
+            <form className="profile-form" onSubmit={handleDeleteAccount}>
+              <div className="profile-form__group">
+                <label htmlFor="deletePassword">Senha atual</label>
+
+                <input
+                  id="deletePassword"
+                  type="password"
+                  value={deletePassword}
+                  onChange={(event) => setDeletePassword(event.target.value)}
+                  autoComplete="current-password"
+                  placeholder="Digite sua senha"
+                  required
+                />
+              </div>
+
+              {dangerMessage && (
+                <div className="profile-form__message profile-form__message--danger">
+                  {dangerMessage}
+                </div>
+              )}
+
+              <div className="profile-modal__actions">
+                <button
+                  type="button"
+                  className="button button--ghost"
+                  onClick={closeDeleteModal}
+                  disabled={isDeletingAccount}
+                >
+                  Cancelar
+                </button>
+
+                <button
+                  type="submit"
+                  className="button button--danger"
+                  disabled={isDeletingAccount}
+                >
+                  {isDeletingAccount ? 'Excluindo...' : 'Excluir definitivamente'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.devbugtracker.dto.AppUserResponseDTO;
 import com.devbugtracker.dto.AuthResponseDTO;
+import com.devbugtracker.dto.DeleteAccountRequestDTO;
 import com.devbugtracker.dto.LoginRequestDTO;
 import com.devbugtracker.dto.MessageResponseDTO;
 import com.devbugtracker.dto.RegisterRequestDTO;
@@ -167,12 +168,16 @@ public class AuthService {
     }
     
     @Transactional
-    public void deleteAuthenticatedUser(AppUser authenticatedUser) {
+    public void deleteAuthenticatedUser(AppUser authenticatedUser, DeleteAccountRequestDTO request) {
         AppUser appUser = appUserRepository.findById(authenticatedUser.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
 
+        if (!passwordEncoder.matches(request.getPassword(), appUser.getPassword())) {
+            throw new BadRequestException("Senha incorreta.");
+        }
+
         String profileImageUrl = appUser.getProfileImageUrl();
-        
+
         emailVerificationTokenRepository.deleteByUser(appUser);
         passwordResetTokenRepository.deleteByUser(appUser);
 
