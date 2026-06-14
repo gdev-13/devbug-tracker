@@ -2,7 +2,7 @@ import { Link, NavLink } from 'react-router';
 
 import { getAuthUser } from '../../services/authStorage';
 
-import './AppSidebar.css';
+import './AppSideBar.css';
 
 function getInitials(name) {
   if (!name) {
@@ -29,7 +29,7 @@ function getImageUrl(profileImageUrl) {
   return `${import.meta.env.VITE_API_URL}${profileImageUrl}`;
 }
 
-function AppSidebar({ userOverride }) {
+function AppSideBar({ userOverride }) {
   const storedUser = getAuthUser();
   const user = userOverride || storedUser;
   const profileImageUrl = getImageUrl(user?.profileImageUrl);
@@ -111,4 +111,4 @@ function AppSidebar({ userOverride }) {
   );
 }
 
-export default AppSidebar;
+export default AppSideBar;
