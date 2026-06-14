@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { Link } from 'react-router';
 
 import { registerUser } from '../../services/authService';
-import { saveAuthData } from '../../services/authStorage';
 
 import './Register.css';
 
@@ -14,6 +13,12 @@ const initialFormData = {
 };
 
 function getRegisterErrorMessage(error) {
+  const fields = error.response?.data?.fields;
+
+  if (fields) {
+    return Object.values(fields)[0];
+  }
+
   if (error.response?.data?.message) {
     return error.response.data.message;
   }
@@ -26,11 +31,11 @@ function getRegisterErrorMessage(error) {
 }
 
 function Register() {
-  const navigate = useNavigate();
 
   const [formData, setFormData] = useState(initialFormData);
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -45,6 +50,7 @@ function Register() {
     event.preventDefault();
 
     setErrorMessage('');
+    setSuccessMessage('');
 
     if (formData.name.trim().length < 3) {
       setErrorMessage('O nome deve ter pelo menos 3 caracteres.');
@@ -64,15 +70,18 @@ function Register() {
     setIsLoading(true);
 
     try {
-      const authData = await registerUser({
-        name: formData.name.trim(),
-        email: formData.email.trim(),
-        password: formData.password,
-      });
+      const response = await registerUser({
+      name: formData.name.trim(),
+      email: formData.email.trim(),
+      password: formData.password,
+    });
 
-      saveAuthData(authData);
+    setSuccessMessage(
+      response.message ||
+        'Cadastro realizado com sucesso. Verifique seu email para ativar sua conta.'
+    );
 
-      navigate('/dashboard');
+    setFormData(initialFormData);
     } catch (error) {
       setErrorMessage(getRegisterErrorMessage(error));
     } finally {
@@ -111,6 +120,12 @@ function Register() {
           {errorMessage && (
             <div className="register-form__error" role="alert">
               {errorMessage}
+            </div>
+          )}
+
+          {successMessage && (
+            <div className="register-form__success" role="status">
+              {successMessage}
             </div>
           )}
 

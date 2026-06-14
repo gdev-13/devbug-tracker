@@ -1,0 +1,104 @@
+.verify-email-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background:
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.28), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.18), transparent 32%),
+    linear-gradient(135deg, #07111f 0%, #0f172a 55%, #111827 100%);
+}
+
+.verify-email-card {
+  width: min(100%, 500px);
+  padding: 2.4rem;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 28px;
+  background: rgba(15, 23, 42, 0.88);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.35);
+  text-align: center;
+  backdrop-filter: blur(18px);
+}
+
+.verify-email-card__logo {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  margin: 0 auto 1.75rem;
+  color: #f8fafc;
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.verify-email-card__logo strong {
+  color: #38bdf8;
+}
+
+.verify-email-card__logo-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.35rem;
+  height: 2.35rem;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-radius: 14px;
+  background: rgba(14, 165, 233, 0.08);
+  color: #38bdf8;
+  font-size: 1.05rem;
+  box-shadow: none;
+}
+
+.verify-email-card__status {
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.2rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.verify-email-card__status--loading {
+  border: 1px solid rgba(96, 165, 250, 0.35);
+  background: rgba(37, 99, 235, 0.14);
+  color: #bfdbfe;
+}
+
+.verify-email-card__status--success {
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  background: rgba(34, 197, 94, 0.13);
+  color: #bbf7d0;
+}
+
+.verify-email-card__status--error {
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  background: rgba(239, 68, 68, 0.13);
+  color: #fecaca;
+}
+
+.verify-email-card h1 {
+  margin-bottom: 0.8rem;
+  color: #f8fafc;
+  font-size: clamp(1.8rem, 4vw, 2.35rem);
+  line-height: 1.15;
+}
+
+.verify-email-card p {
+  margin-bottom: 1.7rem;
+  color: #cbd5e1;
+  line-height: 1.7;
+}
+
+.verify-email-card__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}

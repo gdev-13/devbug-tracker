@@ -11,3 +11,11 @@ export async function registerUser(userData) {
 
   return response.data;
 }
+
+export async function verifyEmail(token) {
+  const response = await api.get('/auth/verify-email', {
+    params: { token },
+  });
+
+  return response.data;
+}

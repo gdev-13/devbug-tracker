@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.devbugtracker.dto.AppUserResponseDTO;
 import com.devbugtracker.dto.AuthResponseDTO;
 import com.devbugtracker.dto.LoginRequestDTO;
+import com.devbugtracker.dto.MessageResponseDTO;
 import com.devbugtracker.dto.RegisterRequestDTO;
 import com.devbugtracker.dto.UpdatePasswordRequestDTO;
 import com.devbugtracker.dto.UpdateUserRequestDTO;
@@ -36,7 +37,7 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public AuthResponseDTO register(@RequestBody @Valid RegisterRequestDTO requestDTO) {
+    public MessageResponseDTO register(@RequestBody @Valid RegisterRequestDTO requestDTO) {
         return authService.register(requestDTO);
     }
     

@@ -19,6 +19,7 @@ import Reports from '../pages/Reports/Reports';
 import Activities from '../pages/Activities/Activities';
 import Settings from '../pages/Settings/Settings';
 import NotFound from '../pages/NotFound/NotFound';
+import VerifyEmail from '../pages/VerifyEmail/VerifyEmail';
 
 function AppRoutes() {
   return (
@@ -43,6 +44,8 @@ function AppRoutes() {
           </PublicOnlyRoute>
           }
         />
+
+        <Route path="/verify-email" element={<VerifyEmail />} />
 
         <Route path="/dashboard" element={
           <ProtectedRoute>

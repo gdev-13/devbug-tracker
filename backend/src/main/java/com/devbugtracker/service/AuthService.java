@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.devbugtracker.dto.AppUserResponseDTO;
 import com.devbugtracker.dto.AuthResponseDTO;
 import com.devbugtracker.dto.LoginRequestDTO;
+import com.devbugtracker.dto.MessageResponseDTO;
 import com.devbugtracker.dto.RegisterRequestDTO;
 import com.devbugtracker.dto.UpdatePasswordRequestDTO;
 import com.devbugtracker.dto.UpdateUserRequestDTO;
@@ -20,6 +21,7 @@ import com.devbugtracker.exception.BadRequestException;
 import com.devbugtracker.exception.ResourceNotFoundException;
 import com.devbugtracker.repository.AppUserRepository;
 import com.devbugtracker.repository.BugRepository;
+import com.devbugtracker.repository.EmailVerificationTokenRepository;
 import com.devbugtracker.repository.ProjectRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -34,26 +36,30 @@ public class AuthService {
     private final ProfileImageService profileImageService;
     private final BugRepository bugRepository;
     private final ProjectRepository projectRepository;
+    private final EmailVerificationService emailVerificationService;
+    private final EmailVerificationTokenRepository emailVerificationTokenRepository;
 
-    public AuthResponseDTO register(RegisterRequestDTO requestDTO) {
-        if (appUserRepository.existsByEmail(requestDTO.getEmail())) {
+    @Transactional
+    public MessageResponseDTO register(RegisterRequestDTO requestDTO) {
+        String email = requestDTO.getEmail().trim().toLowerCase();
+
+        if (appUserRepository.existsByEmail(email)) {
             throw new BadRequestException("Email já cadastrado");
         }
 
         AppUser appUser = new AppUser();
 
         appUser.setName(requestDTO.getName());
-        appUser.setEmail(requestDTO.getEmail());
+        appUser.setEmail(email);
         appUser.setPassword(passwordEncoder.encode(requestDTO.getPassword()));
+        appUser.setEmailVerified(false);
 
         AppUser savedUser = appUserRepository.save(appUser);
 
-        String token = tokenService.generateToken(savedUser);
+        emailVerificationService.createAndSendVerificationEmail(savedUser);
 
-        return new AuthResponseDTO(
-                token,
-                "Bearer",
-                toResponseDTO(savedUser)
+        return new MessageResponseDTO(
+                "Cadastro realizado com sucesso. Verifique seu email para ativar sua conta."
         );
     }
 
@@ -68,11 +74,17 @@ public class AuthService {
     }
     
     public AuthResponseDTO login(LoginRequestDTO requestDTO) {
-        AppUser appUser = appUserRepository.findByEmail(requestDTO.getEmail())
+        String email = requestDTO.getEmail().trim().toLowerCase();
+
+        AppUser appUser = appUserRepository.findByEmail(email)
                 .orElseThrow(() -> new BadRequestException("Email ou senha inválidos"));
 
         if (!passwordEncoder.matches(requestDTO.getPassword(), appUser.getPassword())) {
             throw new BadRequestException("Email ou senha inválidos");
+        }
+
+        if (!appUser.isEmailVerified()) {
+            throw new BadRequestException("Confirme seu email antes de fazer login");
         }
 
         String token = tokenService.generateToken(appUser);
@@ -158,6 +170,8 @@ public class AuthService {
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
 
         String profileImageUrl = appUser.getProfileImageUrl();
+        
+        emailVerificationTokenRepository.deleteByUser(appUser);
 
         List<Bug> bugs = bugRepository.findByProject_User(appUser);
         bugRepository.deleteAll(bugs);

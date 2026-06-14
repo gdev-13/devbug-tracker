@@ -29,6 +29,12 @@ function Login() {
   }
 
   function getLoginErrorMessage(error) {
+    const fields = error.response?.data?.fields;
+
+    if (fields) {
+      return Object.values(fields)[0];
+    }
+
     if (error.response?.data?.message) {
       return error.response.data.message;
     }
@@ -135,7 +141,7 @@ function Login() {
         </form>
 
         <p className="login-card__footer">
-          Ainda não tem uma conta? <a href="/register">Criar conta grátis</a>
+          Ainda não tem uma conta? <Link to="/register">Criar conta grátis</Link>
         </p>
       </section>
 

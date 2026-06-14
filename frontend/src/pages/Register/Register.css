@@ -249,6 +249,16 @@
   font-size: 0.8rem;
 }
 
+.register-form__success {
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  border-radius: 14px;
+  background: rgba(34, 197, 94, 0.12);
+  color: #bbf7d0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
 @media (max-width: 980px) {
   .register-page {
     grid-template-columns: 1fr;
