@@ -63,6 +63,14 @@ O sistema possui autenticação de usuários, confirmação de email, recuperaç
 
 ---
 
+## 🔗 Links do Projeto
+
+* **Frontend Web**: `https://devbug-tracker-two.vercel.app/`
+* **Backend/API**: `https://devbug-tracker-api.onrender.com`
+* **Repositório**: `https://github.com/gdev-13/devbug-tracker`
+
+---
+
 ## 🛠️ Tecnologias Utilizadas
 
 ### Backend
@@ -94,6 +102,13 @@ O sistema possui autenticação de usuários, confirmação de email, recuperaç
 * Tauri
 * Rust
 
+### Deploy e Serviços Externos
+
+* Vercel
+* Render
+* Neon
+* Brevo SMTP
+
 ### Ferramentas
 
 * Git
@@ -101,8 +116,6 @@ O sistema possui autenticação de usuários, confirmação de email, recuperaç
 * Postman
 * VS Code
 * Spring Tool Suite
-* Render
-* Neon
 
 ---
 
@@ -183,9 +196,9 @@ DB_PASSWORD=sua_senha
 
 JWT_SECRET=sua_chave_secreta
 
-MAIL_USERNAME=seu_email@gmail.com
-MAIL_PASSWORD=sua_senha_de_app
-MAIL_FROM=DevBug Tracker <seu_email@gmail.com>
+BREVO_SMTP_LOGIN=seu_login_smtp_brevo
+BREVO_SMTP_KEY=sua_chave_smtp_brevo
+BREVO_FROM=DevBug Tracker <seu_email@dominio.com>
 
 APP_API_URL=http://localhost:8080
 APP_FRONTEND_URL=http://localhost:5173
@@ -201,17 +214,34 @@ spring.datasource.password=${DB_PASSWORD}
 jwt.secret=${JWT_SECRET}
 jwt.expiration=86400000
 
-spring.mail.host=smtp.gmail.com
-spring.mail.port=587
-spring.mail.username=${MAIL_USERNAME}
-spring.mail.password=${MAIL_PASSWORD}
+spring.mail.host=smtp-relay.brevo.com
+spring.mail.port=2525
+spring.mail.username=${BREVO_SMTP_LOGIN}
+spring.mail.password=${BREVO_SMTP_KEY}
 
-app.mail.from=${MAIL_FROM}
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.connectiontimeout=10000
+spring.mail.properties.mail.smtp.timeout=10000
+spring.mail.properties.mail.smtp.writetimeout=10000
+
+app.mail.from=${BREVO_FROM}
 app.api.url=${APP_API_URL}
 app.frontend.url=${APP_FRONTEND_URL}
 
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
+```
+
+Execute o backend:
+
+```bash
+mvn spring-boot:run
+```
+
+Por padrão, a API será executada em:
+
+```bash
+http://localhost:8080
 ```
 
 Execute o backend:
@@ -262,6 +292,49 @@ http://localhost:5173
 
 ---
 
+## 🌐 Executando a Versão Web Publicada
+
+O frontend da aplicação pode ser hospedado na **Vercel**, enquanto o backend permanece publicado no **Render** e conectado ao banco de dados no **Neon**.
+
+No frontend, configure a variável de ambiente:
+
+```env
+VITE_API_URL=https://devbug-tracker-api.onrender.com
+```
+
+Na Vercel, as configurações principais do projeto são:
+
+```txt
+Framework Preset: Vite
+Root Directory: frontend
+Install Command: npm install
+Build Command: npm run build
+Output Directory: dist
+```
+
+Também foi adicionado um arquivo `vercel.json` para permitir o funcionamento correto das rotas internas do React Router:
+
+```json
+{
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
+```
+
+No backend, a URL do frontend publicado deve ser configurada em:
+
+```env
+APP_FRONTEND_URL=https://sua-url-da-vercel.vercel.app
+```
+
+Essa variável é utilizada nos links enviados por email, como confirmação de conta e recuperação de senha.
+
+---
+
 ## 🖥️ Executando como Aplicação Desktop
 
 O projeto também possui configuração com **Tauri**, permitindo gerar uma versão desktop da aplicação.
@@ -276,16 +349,55 @@ npm run tauri dev
 Para gerar o instalador:
 
 ```bash
+cd frontend
+rm -rf dist
+rm -rf src-tauri/target
+npm run build
 npm run tauri build
 ```
 
-Após o build, os arquivos gerados ficam dentro de:
+Após o build, os instaladores ficam dentro de:
 
 ```bash
 frontend/src-tauri/target/release/bundle/
 ```
 
+No Windows, o instalador pode ser encontrado nas pastas:
+
+```bash
+frontend/src-tauri/target/release/bundle/nsis/
+frontend/src-tauri/target/release/bundle/msi/
+```
+
+A versão desktop utiliza a mesma API publicada no Render, desde que o frontend esteja configurado com:
+
+```env
+VITE_API_URL=https://devbug-tracker-api.onrender.com
+```
+
 ---
+
+## 🚧 Limitações e Melhorias Futuras
+
+Apesar das principais funcionalidades já estarem implementadas, algumas melhorias podem ser adicionadas futuramente, como:
+
+* Exportação de relatórios
+* Filtros por período
+* Histórico real de atividades salvo no backend
+* Notificações
+* Testes automatizados
+* Paginação nas listagens
+* Busca textual por projetos e bugs
+* Melhorias no layout dos emails automáticos
+* Hospedagem do frontend em ambiente com HTTPS
+* Integração completa entre versão web hospedada e versão desktop
+
+---
+
+## 📌 Status do Projeto
+
+Projeto em desenvolvimento avançado e já publicado, com frontend web hospedado na Vercel, backend publicado no Render, banco de dados em nuvem com Neon, envio de emails com Brevo SMTP e versão desktop gerada com Tauri.
+
 
 ## 🔐 Autenticação e Segurança
 
@@ -475,23 +587,6 @@ A aplicação possui configurações visuais salvas localmente no navegador, inc
 * Página inicial após login
 
 As configurações são aplicadas apenas nas páginas autenticadas, mantendo as páginas públicas com o visual padrão da aplicação.
-
----
-
-## 🚧 Limitações e Melhorias Futuras
-
-Apesar das principais funcionalidades já estarem implementadas, algumas melhorias podem ser adicionadas futuramente, como:
-
-* Exportação de relatórios
-* Filtros por período
-* Histórico real de atividades salvo no backend
-* Notificações
-* Testes automatizados
-* Paginação nas listagens
-* Busca textual por projetos e bugs
-* Melhorias no layout dos emails automáticos
-* Hospedagem do frontend em ambiente com HTTPS
-* Integração completa entre versão web hospedada e versão desktop
 
 ---
 
