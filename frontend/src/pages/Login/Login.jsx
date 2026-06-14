@@ -28,23 +28,23 @@ function Login() {
     }));
   }
 
-  function getLoginErrorMessage(error) {
-    const fields = error.response?.data?.fields;
+function getLoginErrorMessage(error) {
+  const fields = error.response?.data?.fields;
 
-    if (fields) {
-      return Object.values(fields)[0];
-    }
-
-    if (error.response?.data?.message) {
-      return error.response.data.message;
-    }
-
-    if (!error.response) {
-      return 'Não foi possível conectar ao servidor. Tente novamente mais tarde.';
-    }
-
-    return 'Não foi possível fazer login. Verifique email e senha.';
+  if (fields) {
+    return Object.values(fields)[0];
   }
+
+  if (error.response?.data?.message) {
+    return error.response.data.message;
+  }
+
+  if (!error.response) {
+    return 'Não foi possível conectar ao servidor. Tente novamente mais tarde.';
+  }
+
+  return 'Não foi possível fazer login. Verifique email e senha.';
+}
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -117,6 +117,8 @@ function Login() {
           <div className="form-group">
             <div className="form-group__top">
               <label htmlFor="password">Senha</label>
+
+              <Link to="/forgot-password">Esqueci minha senha</Link>
             </div>
 
             <input

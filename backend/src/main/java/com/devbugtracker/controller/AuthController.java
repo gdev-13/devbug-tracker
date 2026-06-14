@@ -16,14 +16,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.devbugtracker.dto.AppUserResponseDTO;
 import com.devbugtracker.dto.AuthResponseDTO;
+import com.devbugtracker.dto.ForgotPasswordRequestDTO;
 import com.devbugtracker.dto.LoginRequestDTO;
 import com.devbugtracker.dto.MessageResponseDTO;
 import com.devbugtracker.dto.RegisterRequestDTO;
+import com.devbugtracker.dto.ResetPasswordRequestDTO;
 import com.devbugtracker.dto.UpdatePasswordRequestDTO;
 import com.devbugtracker.dto.UpdateUserRequestDTO;
 import com.devbugtracker.entity.AppUser;
 import com.devbugtracker.exception.UnauthorizedException;
 import com.devbugtracker.service.AuthService;
+import com.devbugtracker.service.PasswordResetService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +37,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthController {
 
     private final AuthService authService;
+    private final PasswordResetService passwordResetService;
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
@@ -99,5 +103,19 @@ public class AuthController {
     public void deleteMe(Authentication authentication) {
         AppUser appUser = getAuthenticatedUser(authentication);
         authService.deleteAuthenticatedUser(appUser);
+    }
+    
+    @PostMapping("/forgot-password")
+    public MessageResponseDTO forgotPassword(
+            @RequestBody @Valid ForgotPasswordRequestDTO requestDTO
+    ) {
+        return passwordResetService.requestPasswordReset(requestDTO);
+    }
+
+    @PostMapping("/reset-password")
+    public MessageResponseDTO resetPassword(
+            @RequestBody @Valid ResetPasswordRequestDTO requestDTO
+    ) {
+        return passwordResetService.resetPassword(requestDTO);
     }
 }

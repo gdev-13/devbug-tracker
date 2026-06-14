@@ -38,7 +38,13 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/auth/register", "/auth/login", "/auth/verify-email").permitAll()
+                        .requestMatchers(
+                        		"/auth/register",
+                        		"/auth/login",
+                        		"/auth/verify-email",
+                        		"/auth/forgot-password",
+                        		"/auth/reset-password"
+                        		).permitAll()
                         .requestMatchers("/uploads/profile-images/**").permitAll()
                         .anyRequest().authenticated()
                 )

@@ -20,6 +20,8 @@ import Activities from '../pages/Activities/Activities';
 import Settings from '../pages/Settings/Settings';
 import NotFound from '../pages/NotFound/NotFound';
 import VerifyEmail from '../pages/VerifyEmail/VerifyEmail';
+import ForgotPassword from '../pages/ForgotPassword/ForgotPassword';
+import ResetPassword from '../pages/ResetPassword/ResetPassword';
 
 function AppRoutes() {
   return (
@@ -44,6 +46,15 @@ function AppRoutes() {
           </PublicOnlyRoute>
           }
         />
+
+        <Route path="/forgot-password" element={
+          <PublicOnlyRoute>
+            <ForgotPassword />
+          </PublicOnlyRoute>
+          }
+        />
+
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         <Route path="/verify-email" element={<VerifyEmail />} />
 

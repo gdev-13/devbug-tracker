@@ -22,6 +22,7 @@ import com.devbugtracker.exception.ResourceNotFoundException;
 import com.devbugtracker.repository.AppUserRepository;
 import com.devbugtracker.repository.BugRepository;
 import com.devbugtracker.repository.EmailVerificationTokenRepository;
+import com.devbugtracker.repository.PasswordResetTokenRepository;
 import com.devbugtracker.repository.ProjectRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -38,6 +39,7 @@ public class AuthService {
     private final ProjectRepository projectRepository;
     private final EmailVerificationService emailVerificationService;
     private final EmailVerificationTokenRepository emailVerificationTokenRepository;
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
 
     @Transactional
     public MessageResponseDTO register(RegisterRequestDTO requestDTO) {
@@ -172,6 +174,7 @@ public class AuthService {
         String profileImageUrl = appUser.getProfileImageUrl();
         
         emailVerificationTokenRepository.deleteByUser(appUser);
+        passwordResetTokenRepository.deleteByUser(appUser);
 
         List<Bug> bugs = bugRepository.findByProject_User(appUser);
         bugRepository.deleteAll(bugs);
