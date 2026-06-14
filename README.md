@@ -10,13 +10,18 @@ A plataforma permite criar projetos, registrar bugs, documentar mensagens de err
 
 Durante o desenvolvimento de sistemas, é comum encontrar erros recorrentes, mensagens difíceis de lembrar e soluções que acabam se perdendo com o tempo. O **DevBug Tracker** foi criado com o objetivo de centralizar essas informações em um ambiente organizado, permitindo que cada bug registrado se torne também uma fonte de consulta e aprendizado.
 
-O sistema possui autenticação de usuários, gerenciamento de projetos, gerenciamento de bugs, painel com indicadores, relatórios com filtros, atividades recentes, área de perfil e configurações visuais da aplicação.
+O sistema possui autenticação de usuários, confirmação de email, recuperação de senha, gerenciamento de projetos, gerenciamento de bugs, painel com indicadores, relatórios com filtros, atividades recentes, área de perfil e configurações visuais da aplicação.
 
 ---
 
 ## ✨ Funcionalidades
 
-* Cadastro e login de usuários
+* Cadastro de usuários com validação de email
+* Confirmação de email por link enviado automaticamente
+* Login de usuários
+* Bloqueio de login para contas ainda não confirmadas
+* Recuperação de senha por email
+* Redefinição de senha com token temporário
 * Autenticação com token JWT
 * Rotas protegidas no frontend
 * Dashboard com métricas gerais
@@ -36,6 +41,7 @@ O sistema possui autenticação de usuários, gerenciamento de projetos, gerenci
 * Personalização da cor de destaque
 * Modo de densidade confortável ou compacta
 * Escolha da página inicial após login
+* Tratamento de erros com mensagens personalizadas
 
 ---
 
@@ -43,7 +49,10 @@ O sistema possui autenticação de usuários, gerenciamento de projetos, gerenci
 
 * **Home**: página inicial pública com apresentação da aplicação.
 * **Login**: autenticação de usuário.
-* **Cadastro**: criação de nova conta.
+* **Cadastro**: criação de nova conta com envio de email de confirmação.
+* **Verificação de email**: tela de confirmação da conta por token.
+* **Recuperação de senha**: solicitação de link para redefinição de senha.
+* **Redefinição de senha**: criação de uma nova senha a partir de um token temporário.
 * **Dashboard**: visão geral com métricas de projetos e bugs.
 * **Projetos**: listagem, criação, edição, detalhes e exclusão de projetos.
 * **Bugs**: listagem geral, criação, edição, detalhes e exclusão de bugs.
@@ -66,6 +75,7 @@ O sistema possui autenticação de usuários, gerenciamento de projetos, gerenci
 * Hibernate
 * PostgreSQL
 * Bean Validation
+* Spring Mail
 * Lombok
 * Maven
 
@@ -79,6 +89,11 @@ O sistema possui autenticação de usuários, gerenciamento de projetos, gerenci
 * CSS3
 * LocalStorage
 
+### Aplicação Desktop
+
+* Tauri
+* Rust
+
 ### Ferramentas
 
 * Git
@@ -86,6 +101,8 @@ O sistema possui autenticação de usuários, gerenciamento de projetos, gerenci
 * Postman
 * VS Code
 * Spring Tool Suite
+* Render
+* Neon
 
 ---
 
@@ -109,6 +126,7 @@ devbug-tracker/
 │   │   │   │       └── service/
 │   │   │   └── resources/
 │   │   └── test/
+│   ├── Dockerfile
 │   ├── pom.xml
 │   └── .gitignore
 │
@@ -122,6 +140,7 @@ devbug-tracker/
 │   │   ├── App.jsx
 │   │   ├── index.css
 │   │   └── main.jsx
+│   ├── src-tauri/
 │   ├── package.json
 │   ├── .env.example
 │   └── .gitignore
@@ -143,6 +162,8 @@ Antes de começar, é necessário ter instalado:
 * PostgreSQL
 * Git
 
+Para gerar a versão desktop com Tauri, também é necessário ter o ambiente do Rust configurado.
+
 ---
 
 ## ⚙️ Configuração do Backend
@@ -153,12 +174,41 @@ Acesse a pasta do backend:
 cd backend
 ```
 
-Configure o arquivo `application.properties` com os dados do seu banco PostgreSQL:
+Configure as variáveis de ambiente necessárias para o backend:
+
+```env
+DB_URL=jdbc:postgresql://localhost:5432/devbug_tracker
+DB_USERNAME=seu_usuario
+DB_PASSWORD=sua_senha
+
+JWT_SECRET=sua_chave_secreta
+
+MAIL_USERNAME=seu_email@gmail.com
+MAIL_PASSWORD=sua_senha_de_app
+MAIL_FROM=DevBug Tracker <seu_email@gmail.com>
+
+APP_API_URL=http://localhost:8080
+APP_FRONTEND_URL=http://localhost:5173
+```
+
+O arquivo `application.properties` utiliza essas variáveis para configurar banco de dados, autenticação JWT, envio de emails e URLs da aplicação:
 
 ```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/devbug_tracker
-spring.datasource.username=seu_usuario
-spring.datasource.password=sua_senha
+spring.datasource.url=${DB_URL}
+spring.datasource.username=${DB_USERNAME}
+spring.datasource.password=${DB_PASSWORD}
+
+jwt.secret=${JWT_SECRET}
+jwt.expiration=86400000
+
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=${MAIL_USERNAME}
+spring.mail.password=${MAIL_PASSWORD}
+
+app.mail.from=${MAIL_FROM}
+app.api.url=${APP_API_URL}
+app.frontend.url=${APP_FRONTEND_URL}
 
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
@@ -212,21 +262,58 @@ http://localhost:5173
 
 ---
 
-## 🔐 Autenticação
+## 🖥️ Executando como Aplicação Desktop
 
-O sistema utiliza autenticação baseada em **JWT**. Após o login ou cadastro, o backend retorna um token, que é armazenado no `localStorage` e utilizado nas requisições autenticadas por meio de interceptors do Axios.
+O projeto também possui configuração com **Tauri**, permitindo gerar uma versão desktop da aplicação.
+
+Para executar em modo desenvolvimento:
+
+```bash
+cd frontend
+npm run tauri dev
+```
+
+Para gerar o instalador:
+
+```bash
+npm run tauri build
+```
+
+Após o build, os arquivos gerados ficam dentro de:
+
+```bash
+frontend/src-tauri/target/release/bundle/
+```
+
+---
+
+## 🔐 Autenticação e Segurança
+
+O sistema utiliza autenticação baseada em **JWT**. Após o login, o backend retorna um token, que é armazenado no `localStorage` e utilizado nas requisições autenticadas por meio de interceptors do Axios.
 
 As rotas privadas do frontend só podem ser acessadas por usuários autenticados.
+
+Além do JWT, o sistema possui fluxos baseados em tokens temporários para:
+
+* Confirmação de email;
+* Recuperação de senha.
+
+No cadastro, o usuário não recebe acesso imediato à aplicação. Após criar a conta, um email de confirmação é enviado para o endereço informado. O login só é liberado depois que o email é confirmado pelo link recebido.
+
+Na recuperação de senha, o usuário informa o email cadastrado e recebe um link temporário para redefinir a senha. O token possui prazo de expiração e só pode ser utilizado uma vez.
 
 ---
 
 ## 📡 Principais Endpoints
 
-### Autenticação e Usuário
+### Autenticação, Email e Usuário
 
 ```http
 POST   /auth/register
 POST   /auth/login
+GET    /auth/verify-email
+POST   /auth/forgot-password
+POST   /auth/reset-password
 GET    /auth/me
 PUT    /auth/me
 PUT    /auth/me/password
@@ -280,9 +367,34 @@ Principais dados:
 * Nome
 * Email
 * Senha criptografada
+* Status de confirmação do email
 * Foto de perfil
 * Data de criação
 * Data de atualização
+
+### Token de Verificação de Email
+
+Representa o token temporário enviado ao usuário para confirmar a conta.
+
+Principais dados:
+
+* Token
+* Usuário associado
+* Data de expiração
+* Data de utilização
+* Data de criação
+
+### Token de Recuperação de Senha
+
+Representa o token temporário utilizado no fluxo de redefinição de senha.
+
+Principais dados:
+
+* Token
+* Usuário associado
+* Data de expiração
+* Data de utilização
+* Data de criação
 
 ### Projeto
 
@@ -368,39 +480,40 @@ As configurações são aplicadas apenas nas páginas autenticadas, mantendo as 
 
 ## 🚧 Limitações e Melhorias Futuras
 
-A funcionalidade de recuperação de senha por email ainda não foi implementada nesta versão. Atualmente, o sistema permite cadastro, login, alteração de senha pelo perfil do usuário autenticado e gerenciamento completo da conta, mas não possui fluxo de redefinição de senha para usuários deslogados.
-
-Como melhoria futura, pretende-se implementar um fluxo de recuperação com envio de email, geração de token temporário e tela para redefinição segura da senha.
-
-Outras melhorias futuras incluem:
+Apesar das principais funcionalidades já estarem implementadas, algumas melhorias podem ser adicionadas futuramente, como:
 
 * Exportação de relatórios
 * Filtros por período
 * Histórico real de atividades salvo no backend
 * Notificações
 * Testes automatizados
-* Deploy da aplicação
-* Recuperação de senha por email
 * Paginação nas listagens
 * Busca textual por projetos e bugs
+* Melhorias no layout dos emails automáticos
+* Hospedagem do frontend em ambiente com HTTPS
+* Integração completa entre versão web hospedada e versão desktop
 
 ---
 
 ## 📷 Capturas de Tela (prints)
+
 Os prints disponíveis em `docs/images/` mostram as telas principais da aplicação e exemplos de uso. Abaixo há uma lista dos arquivos encontrados e uma breve descrição de cada um:
 
-- `docs/images/home.png`: Tela inicial pública (Home) com apresentação da aplicação.
-- `docs/images/login.png`: Tela de login do usuário.
-- `docs/images/cadastro.png`: Tela de cadastro/registro de novo usuário.
-- `docs/images/dashboard.png`: Dashboard com métricas gerais, gráficos e indicadores.
-- `docs/images/projetos.png`: Listagem de projetos do usuário.
-- `docs/images/projeto-detalhes.png`: Página de detalhes de um projeto específico.
-- `docs/images/bugs.png`: Listagem geral de bugs.
-- `docs/images/bug-detalhes.png`: Página de detalhes de um bug, incluindo mensagem de erro e solução.
-- `docs/images/atividades.png`: Linha do tempo de atividades mostrando eventos recentes.
-- `docs/images/perfil.png`: Página de perfil do usuário com edição de dados e foto.
-- `docs/images/configuracoes.png`: Tela de configurações (tema, densidade, página inicial).
-- `docs/images/relatorio.png`: Tela de relatórios com filtros e gráficos.
+* `docs/images/home.png`: Tela inicial pública com apresentação da aplicação.
+* `docs/images/login.png`: Tela de login do usuário.
+* `docs/images/cadastro.png`: Tela de cadastro de novo usuário.
+* `docs/images/verificacao-email.png`: Tela de confirmação de email.
+* `docs/images/recuperacao-senha.png`: Tela de solicitação de recuperação de senha.
+* `docs/images/redefinicao-senha.png`: Tela de redefinição de senha.
+* `docs/images/dashboard.png`: Dashboard com métricas gerais, gráficos e indicadores.
+* `docs/images/projetos.png`: Listagem de projetos do usuário.
+* `docs/images/projeto-detalhes.png`: Página de detalhes de um projeto específico.
+* `docs/images/bugs.png`: Listagem geral de bugs.
+* `docs/images/bug-detalhes.png`: Página de detalhes de um bug, incluindo mensagem de erro e solução.
+* `docs/images/atividades.png`: Linha do tempo de atividades mostrando eventos recentes.
+* `docs/images/perfil.png`: Página de perfil do usuário com edição de dados e foto.
+* `docs/images/configuracoes.png`: Tela de configurações.
+* `docs/images/relatorio.png`: Tela de relatórios com filtros e gráficos.
 
 ---
 
