@@ -17,11 +17,17 @@ public class CorsConfig implements WebMvcConfigurer {
     @Value("${app.upload.profile-images-url}")
     private String profileImagesUrl;
 
+    @Value("${app.frontend.url}")
+    private String frontendUrl;
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:5173")
-                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowedOrigins(
+                        "http://localhost:5173",
+                        frontendUrl
+                )
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*");
     }
     
