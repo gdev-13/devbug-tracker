@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
-import AppSidebar from '../../components/AppSidebar/AppSidebar';
+import AppSideBar from '../../components/AppSideBar/AppSideBar';
 import { clearAuthData } from '../../services/authStorage';
 import { getBugsByProjectId } from '../../services/bugService';
 import { deleteProject, getProjectById } from '../../services/projectsService';
@@ -125,7 +125,7 @@ function ProjectDetails() {
 
   return (
     <main className="project-details-page">
-      <AppSidebar />
+      <AppSideBar />
 
       <section className="project-details-content">
         <header className="project-details-header">

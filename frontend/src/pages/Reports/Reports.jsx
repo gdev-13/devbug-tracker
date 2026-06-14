@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import AppSidebar from '../../components/AppSidebar/AppSidebar';
+import AppSideBar from '../../components/AppSideBar/AppSideBar';
 import { clearAuthData } from '../../services/authStorage';
 import { getBugs } from '../../services/bugService';
 import { getProjects } from '../../services/projectsService';
@@ -420,7 +420,7 @@ function Reports() {
 
   return (
     <main className="reports-page">
-      <AppSidebar />
+      <AppSideBar />
 
       <section className="reports-content">
         <header className="reports-header">

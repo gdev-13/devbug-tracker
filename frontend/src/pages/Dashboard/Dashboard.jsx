@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import AppSidebar from '../../components/AppSidebar/AppSidebar';
+import AppSideBar from '../../components/AppSideBar/AppSideBar';
 import DashboardSummary from '../../components/DashboardSummary/DashboardSummary';
 import { clearAuthData, getAuthUser } from '../../services/authStorage';
 import { getDashboardData } from '../../services/dashboardService';
@@ -61,7 +61,7 @@ function Dashboard() {
 
   return (
     <main className="dashboard-page">
-      <AppSidebar />
+      <AppSideBar />
 
       <section className="dashboard-content">
         <header className="dashboard-header">

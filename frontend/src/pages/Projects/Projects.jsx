@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import AppSidebar from '../../components/AppSidebar/AppSidebar';
+import AppSideBar from '../../components/AppSideBar/AppSideBar';
 import { clearAuthData } from '../../services/authStorage';
 import { getProjects } from '../../services/projectsService';
 
@@ -62,7 +62,7 @@ function Projects() {
 
   return (
     <main className="projects-page">
-      <AppSidebar />
+      <AppSideBar />
 
       <section className="projects-content">
         <header className="projects-header">

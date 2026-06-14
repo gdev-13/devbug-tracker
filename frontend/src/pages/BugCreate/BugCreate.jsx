@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
-import AppSidebar from '../../components/AppSidebar/AppSidebar';
+import AppSideBar from '../../components/AppSideBar/AppSideBar';
 import { clearAuthData } from '../../services/authStorage';
 import { createBug } from '../../services/bugService';
 
@@ -84,7 +84,7 @@ function BugCreate() {
 
   return (
     <main className="bug-create-page">
-      <AppSidebar />
+      <AppSideBar />
 
       <section className="bug-create-content">
         <header className="bug-create-header">

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import AppSidebar from '../../components/AppSidebar/AppSidebar';
+import AppSideBar from '../../components/AppSideBar/AppSideBar';
 import { clearAuthData, saveAuthUser } from '../../services/authStorage';
 import {
   deleteAccount,
@@ -365,7 +365,7 @@ function Profile() {
 
   return (
     <main className="profile-page">
-      <AppSidebar userOverride={user}/>
+      <AppSideBar userOverride={user}/>
 
       <section className="profile-content">
         <header className="profile-header">

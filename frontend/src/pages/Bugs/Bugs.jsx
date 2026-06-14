@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import AppSidebar from '../../components/AppSidebar/AppSidebar';
+import AppSideBar from '../../components/AppSideBar/AppSideBar';
 import { clearAuthData } from '../../services/authStorage';
 import { getBugs } from '../../services/bugService';
 
@@ -76,7 +76,7 @@ function Bugs() {
 
   return (
     <main className="bugs-page">
-      <AppSidebar />
+      <AppSideBar />
 
       <section className="bugs-content">
         <header className="bugs-header">

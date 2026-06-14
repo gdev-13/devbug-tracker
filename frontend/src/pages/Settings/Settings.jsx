@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import AppSidebar from '../../components/AppSidebar/AppSidebar';
+import AppSideBar from '../../components/AppSideBar/AppSideBar';
 import { getAppSettings, saveAppSettings } from '../../services/settingsStorage';
 
 import './Settings.css';
@@ -63,7 +63,7 @@ function Settings() {
 
   return (
     <main className="settings-page">
-      <AppSidebar />
+      <AppSideBar />
 
       <section className="settings-content">
         <header className="settings-header">

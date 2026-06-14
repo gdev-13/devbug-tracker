@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 
-import AppSidebar from '../../components/AppSidebar/AppSidebar';
+import AppSideBar from '../../components/AppSideBar/AppSideBar';
 import DashboardSummary from '../../components/DashboardSummary/DashboardSummary';
 
 import mascotProgramming from '../../assets/mascot-programming.png';
@@ -91,7 +91,7 @@ function Home() {
 
         <aside className="dashboard-preview" aria-label="Prévia do dashboard">
           <div className="dashboard-preview__shell">
-            <AppSidebar userOverride={homePreviewUser} />
+            <AppSideBar userOverride={homePreviewUser} />
 
             <section className="dashboard-content">
               <header className="dashboard-header">

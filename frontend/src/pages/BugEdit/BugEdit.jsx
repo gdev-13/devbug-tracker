@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
-import AppSidebar from '../../components/AppSidebar/AppSidebar';
+import AppSideBar from '../../components/AppSideBar/AppSideBar';
 import { clearAuthData } from '../../services/authStorage';
 import { getBugById, updateBug } from '../../services/bugService';
 
@@ -124,7 +124,7 @@ function BugEdit() {
 
   return (
     <main className="bug-create-page">
-      <AppSidebar />
+      <AppSideBar />
 
       <section className="bug-create-content">
         <header className="bug-create-header">

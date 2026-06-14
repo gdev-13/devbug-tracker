@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import AppSidebar from '../../components/AppSidebar/AppSidebar';
+import AppSideBar from '../../components/AppSideBar/AppSideBar';
 import { clearAuthData } from '../../services/authStorage';
 import { createProject } from '../../services/projectsService';
 
@@ -72,7 +72,7 @@ function ProjectCreate() {
 
   return (
     <main className="project-create-page">
-      <AppSidebar />
+      <AppSideBar />
 
       <section className="project-create-content">
         <header className="project-create-header">
