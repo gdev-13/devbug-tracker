@@ -37,6 +37,7 @@ public class AppUser {
     @OneToMany(mappedBy = "user")
     private List<Project> projects = new ArrayList<>();
     private String profileImageUrl;
+    private String profileImagePublicId;
     @Column(nullable = false)
     private boolean emailVerified = false;
     @PrePersist

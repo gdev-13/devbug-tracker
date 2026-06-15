@@ -12,6 +12,7 @@ import com.devbugtracker.dto.AuthResponseDTO;
 import com.devbugtracker.dto.DeleteAccountRequestDTO;
 import com.devbugtracker.dto.LoginRequestDTO;
 import com.devbugtracker.dto.MessageResponseDTO;
+import com.devbugtracker.dto.ProfileImageUploadResultDTO;
 import com.devbugtracker.dto.RegisterRequestDTO;
 import com.devbugtracker.dto.UpdatePasswordRequestDTO;
 import com.devbugtracker.dto.UpdateUserRequestDTO;
@@ -135,15 +136,16 @@ public class AuthService {
         AppUser appUser = appUserRepository.findById(authenticatedUser.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
 
-        String oldProfileImageUrl = appUser.getProfileImageUrl();
+        String oldProfileImagePublicId = appUser.getProfileImagePublicId();
 
-        String profileImageUrl = profileImageService.saveProfileImage(file);
+        ProfileImageUploadResultDTO uploadResult = profileImageService.saveProfileImage(file);
 
-        appUser.setProfileImageUrl(profileImageUrl);
+        appUser.setProfileImageUrl(uploadResult.getImageUrl());
+        appUser.setProfileImagePublicId(uploadResult.getPublicId());
 
         AppUser updatedUser = appUserRepository.save(appUser);
 
-        profileImageService.deleteProfileImage(oldProfileImageUrl);
+        profileImageService.deleteProfileImage(oldProfileImagePublicId);
 
         return toResponseDTO(updatedUser);
     }
@@ -153,16 +155,18 @@ public class AuthService {
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
 
         String profileImageUrl = appUser.getProfileImageUrl();
+        String profileImagePublicId = appUser.getProfileImagePublicId();
 
         if (profileImageUrl == null || profileImageUrl.isBlank()) {
             throw new BadRequestException("Usuário não possui foto de perfil");
         }
 
         appUser.setProfileImageUrl(null);
+        appUser.setProfileImagePublicId(null);
 
         AppUser updatedUser = appUserRepository.save(appUser);
 
-        profileImageService.deleteProfileImage(profileImageUrl);
+        profileImageService.deleteProfileImage(profileImagePublicId);
 
         return toResponseDTO(updatedUser);
     }
@@ -176,7 +180,7 @@ public class AuthService {
             throw new BadRequestException("Senha incorreta.");
         }
 
-        String profileImageUrl = appUser.getProfileImageUrl();
+        String profileImagePublicId = appUser.getProfileImagePublicId();
 
         emailVerificationTokenRepository.deleteByUser(appUser);
         passwordResetTokenRepository.deleteByUser(appUser);
@@ -189,6 +193,6 @@ public class AuthService {
 
         appUserRepository.delete(appUser);
 
-        profileImageService.deleteProfileImage(profileImageUrl);
+        profileImageService.deleteProfileImage(profileImagePublicId);
     }
 }

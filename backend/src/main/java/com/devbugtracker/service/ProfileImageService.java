@@ -1,90 +1,79 @@
 package com.devbugtracker.service;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.Map;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cloudinary.Cloudinary;
+import com.devbugtracker.dto.ProfileImageUploadResultDTO;
 import com.devbugtracker.exception.BadRequestException;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class ProfileImageService {
 
-    @Value("${app.upload.profile-images-dir}")
-    private String profileImagesDir;
+    private static final long MAX_FILE_SIZE = 2 * 1024 * 1024;
 
-    @Value("${app.upload.profile-images-url}")
-    private String profileImagesUrl;
+    private final Cloudinary cloudinary;
 
-    public String saveProfileImage(MultipartFile file) {
+    public ProfileImageUploadResultDTO saveProfileImage(MultipartFile file) {
         if (file == null || file.isEmpty()) {
             throw new BadRequestException("A imagem de perfil é obrigatória");
         }
 
-        String contentType = file.getContentType();
-        String extension = getExtensionByContentType(contentType);
+        if (file.getSize() > MAX_FILE_SIZE) {
+            throw new BadRequestException("A imagem deve ter no máximo 2MB");
+        }
+
+        validateContentType(file.getContentType());
 
         try {
-            Path uploadDir = Paths.get(profileImagesDir)
-                    .toAbsolutePath()
-                    .normalize();
+            Map<?, ?> uploadResult = cloudinary.uploader().upload(
+                    file.getBytes(),
+                    Map.of(
+                            "folder", "devbug-tracker/profile-images",
+                            "public_id", UUID.randomUUID().toString(),
+                            "resource_type", "image",
+                            "overwrite", false
+                    )
+            );
 
-            Files.createDirectories(uploadDir);
+            String imageUrl = String.valueOf(uploadResult.get("secure_url"));
+            String publicId = String.valueOf(uploadResult.get("public_id"));
 
-            String fileName = UUID.randomUUID() + extension;
-            Path targetPath = uploadDir.resolve(fileName);
-
-            Files.copy(file.getInputStream(), targetPath);
-
-            return profileImagesUrl + "/" + fileName;
+            return new ProfileImageUploadResultDTO(imageUrl, publicId);
         } catch (IOException exception) {
-            throw new BadRequestException("Erro ao salvar imagem de perfil");
+            throw new BadRequestException("Erro ao enviar imagem de perfil");
         }
     }
 
-    public void deleteProfileImage(String profileImageUrl) {
-        if (profileImageUrl == null || profileImageUrl.isBlank()) {
+    public void deleteProfileImage(String publicId) {
+        if (publicId == null || publicId.isBlank()) {
             return;
         }
-
-        String expectedPrefix = this.profileImagesUrl + "/";
-
-        if (!profileImageUrl.startsWith(expectedPrefix)) {
-            return;
-        }
-
-        String fileName = profileImageUrl.substring(expectedPrefix.length());
 
         try {
-            Path imagePath = Paths.get(profileImagesDir)
-                    .toAbsolutePath()
-                    .normalize()
-                    .resolve(fileName);
-
-            Files.deleteIfExists(imagePath);
+            cloudinary.uploader().destroy(
+                    publicId,
+                    Map.of("resource_type", "image")
+            );
         } catch (IOException exception) {
-            // Se não conseguir apagar a imagem antiga, não bloqueia a atualização do usuário.
+            // Se não conseguir apagar a imagem antiga, não bloqueia a operação do usuário.
         }
     }
 
-    private String getExtensionByContentType(String contentType) {
-        if ("image/jpeg".equals(contentType)) {
-            return ".jpg";
+    private void validateContentType(String contentType) {
+        if (
+                !"image/jpeg".equals(contentType)
+                && !"image/png".equals(contentType)
+                && !"image/webp".equals(contentType)
+        ) {
+            throw new BadRequestException("Formato de imagem inválido. Use JPG, PNG ou WEBP");
         }
-
-        if ("image/png".equals(contentType)) {
-            return ".png";
-        }
-
-        if ("image/webp".equals(contentType)) {
-            return ".webp";
-        }
-
-        throw new BadRequestException("Formato de imagem inválido. Use JPG, PNG ou WEBP");
     }
 }
