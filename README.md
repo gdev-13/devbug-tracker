@@ -35,7 +35,7 @@ O sistema possui autenticação de usuários, confirmação de email, recuperaç
 * Perfil do usuário
 * Edição de nome
 * Alteração de senha
-* Upload e remoção de foto de perfil
+* Upload, atualização e remoção de foto de perfil com armazenamento em nuvem via Cloudinary
 * Exclusão de conta
 * Configurações da aplicação
 * Personalização da cor de destaque
@@ -108,6 +108,7 @@ O sistema possui autenticação de usuários, confirmação de email, recuperaç
 * Render
 * Neon
 * Brevo SMTP
+* Cloudinary
 
 ### Ferramentas
 
@@ -202,9 +203,13 @@ BREVO_FROM=DevBug Tracker <seu_email@dominio.com>
 
 APP_API_URL=http://localhost:8080
 APP_FRONTEND_URL=http://localhost:5173
+
+CLOUDINARY_CLOUD_NAME=seu_cloud_name
+CLOUDINARY_API_KEY=sua_api_key
+CLOUDINARY_API_SECRET=seu_api_secret
 ```
 
-O arquivo `application.properties` utiliza essas variáveis para configurar banco de dados, autenticação JWT, envio de emails e URLs da aplicação:
+O arquivo `application.properties` utiliza essas variáveis para configurar banco de dados, autenticação JWT, envio de emails, armazenamento de imagens no Cloudinary e URLs da aplicação:
 
 ```properties
 spring.datasource.url=${DB_URL}
@@ -255,6 +260,16 @@ Por padrão, a API será executada em:
 ```bash
 http://localhost:8080
 ```
+
+---
+
+## 🖼️ Armazenamento de Imagens
+
+O upload da foto de perfil do usuário é realizado por meio do **Cloudinary**, serviço utilizado para armazenar e gerenciar imagens em nuvem.
+
+Quando o usuário envia uma foto de perfil, a imagem é enviada para o Cloudinary e a aplicação salva a URL retornada pelo serviço. Dessa forma, a imagem pode ser carregada corretamente tanto na versão local quanto na versão publicada da aplicação.
+
+Também é possível remover a foto de perfil, apagando a referência associada ao usuário e mantendo o gerenciamento da imagem centralizado no serviço externo.
 
 ---
 
