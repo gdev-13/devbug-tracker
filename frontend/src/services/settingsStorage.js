@@ -1,4 +1,6 @@
-const SETTINGS_KEY = '@devbugtracker:settings';
+import { getAuthUser } from './authStorage';
+
+const SETTINGS_KEY_PREFIX = '@devbugtracker:settings';
 
 const defaultSettings = {
   accent: 'blue',
@@ -33,11 +35,27 @@ const accentPresets = {
   },
 };
 
+function getSettingsKey() {
+  const user = getAuthUser();
+
+  if (!user?.id) {
+    return null;
+  }
+
+  return `${SETTINGS_KEY_PREFIX}:${user.id}`;
+}
+
 export function getAppSettings() {
-  const settings = localStorage.getItem(SETTINGS_KEY);
+  const settingsKey = getSettingsKey();
+
+  if (!settingsKey) {
+    return { ...defaultSettings };
+  }
+
+  const settings = localStorage.getItem(settingsKey);
 
   if (!settings) {
-    return defaultSettings;
+    return { ...defaultSettings };
   }
 
   return {
@@ -47,12 +65,17 @@ export function getAppSettings() {
 }
 
 export function saveAppSettings(settings) {
+  const settingsKey = getSettingsKey();
+
   const updatedSettings = {
     ...defaultSettings,
     ...settings,
   };
 
-  localStorage.setItem(SETTINGS_KEY, JSON.stringify(updatedSettings));
+  if (settingsKey) {
+    localStorage.setItem(settingsKey, JSON.stringify(updatedSettings));
+  }
+
   applyAppSettings(updatedSettings);
 
   return updatedSettings;

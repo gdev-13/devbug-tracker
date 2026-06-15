@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router';
 import { saveAuthData } from '../../services/authStorage';
 import { loginUser } from '../../services/authService';
 
-import { getStartPage } from '../../services/settingsStorage';
+import { applyAppSettings, getStartPage } from '../../services/settingsStorage';
 
 import './Login.css';
 
@@ -56,6 +56,7 @@ function getLoginErrorMessage(error) {
       const authData = await loginUser(formData);
 
       saveAuthData(authData);
+      applyAppSettings();
 
       navigate(getStartPage());
     } catch (error) {
