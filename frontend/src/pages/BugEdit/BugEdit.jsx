@@ -150,7 +150,7 @@ function BugEdit() {
 
         {isLoading ? (
           <div className="bug-form">
-            <div className="bug-form__error">
+            <div className="bug-details-feedback">
               Carregando dados do bug...
             </div>
           </div>

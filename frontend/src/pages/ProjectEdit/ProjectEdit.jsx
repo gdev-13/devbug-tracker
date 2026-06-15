@@ -131,7 +131,7 @@ function ProjectEdit() {
 
         {isLoading ? (
           <div className="project-form">
-            <div className="project-form__error">
+            <div className="project-details-feedback">
               Carregando dados do projeto...
             </div>
           </div>
